@@ -1,15 +1,15 @@
 import "./App.css";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import Home from "./Pages/Home";
+import Profile from "./Pages/Profile";
 
 function App() {
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold text-blue-600 mb-4">
-        Hello, Tailwind CSS!
-      </h1>
-      <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-        Click me
-      </button>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/profile" element={<Profile />} />
+    </Routes>
   );
 }
 
