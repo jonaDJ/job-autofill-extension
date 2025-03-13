@@ -1,8 +1,19 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: "./",
+  build: {
+    rollupOptions: {
+      input: {
+        main: "index.html",
+        content: "src/content/content.js",
+      },
+      output: {
+        entryFileNames: "[name].js",
+        dir: "dist",
+      },
+    },
+    outDir: "dist",
+  },
 });
