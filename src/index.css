@@ -19,7 +19,7 @@
 
 html,
 body {
-  width: 400px; /* Adjust this as needed */
+  width: 400px;
   min-width: 400px;
   height: auto;
   overflow: hidden;
