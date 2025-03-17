@@ -2,10 +2,14 @@ import React from "react";
 
 const FieldGroup = ({ heading, children, isFile = false }) => {
   return (
-    <div className="field-group">
-      <h3 className="profile-section-title">{heading}</h3>
-      <div className="separator"></div>
-      <div className={`field-group-content ${isFile ? "file-content" : ""}`}>
+    <div className="mb-6">
+      <h3 className="text-xl font-semibold mb-2">{heading}</h3>
+      <div className="border-b border-gray-200 mb-4"></div>
+      <div
+        className={`${
+          isFile ? "grid grid-cols-1 gap-4" : "grid grid-cols-2 gap-4"
+        }`}
+      >
         {children}
       </div>
     </div>
@@ -22,8 +26,8 @@ const FormField = ({
   children,
 }) => {
   return (
-    <div className="form-field">
-      <label htmlFor={id} className="form-label">
+    <div className="mb-4">
+      <label htmlFor={id} className="block text-sm font-medium text-gray-900">
         {label}
       </label>
       {children ? (
@@ -35,7 +39,7 @@ const FormField = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="form-input"
+          className="mt-1 bg-gray-50 block w-full border border-gray-500 focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-2"
         />
       )}
     </div>

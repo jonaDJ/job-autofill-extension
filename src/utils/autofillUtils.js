@@ -34,7 +34,7 @@ const autofillData = async (profile, setErrorMessage) => {
 };
 
 async function observeAutocomplete(input) {
-  console.log("in", input); //we may need input in the future
+  console.log("in", input); //TODO: we may need input in the future
   const listbox = document.querySelector("ul[role='listbox']");
   if (!listbox) return; // Exit if no listbox is found
 

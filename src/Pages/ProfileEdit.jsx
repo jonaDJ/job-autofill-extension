@@ -1,24 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { FieldGroup, FormField } from "../components/Fields";
-import { initialData } from "../utils/profileFields";
+import { ProfileContext } from "../contexts/ProfileContext";
 
 const ProfileEdit = () => {
-  const [profile, setProfile] = useState(initialData);
-  const [resume, setResume] = useState(null);
+  const { profile, resume, saveProfile, setProfile, setResume, errorMessage } =
+    useContext(ProfileContext);
+
   const [step, setStep] = useState(1);
   const [isSaved, setIsSaved] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  useEffect(() => {
-    chrome.storage.local.get(["profile", "resume"], (result) => {
-      if (result.profile) {
-        setProfile(result.profile);
-      }
-      if (result.resume) {
-        setResume(result.resume);
-      }
-    });
-  }, []);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -27,18 +16,9 @@ const ProfileEdit = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    chrome.storage.local.set({ profile, resume }, () => {
-      if (chrome.runtime.lastError) {
-        console.error("Error saving profile:", chrome.runtime.lastError);
-        setIsSaved(false);
-        setErrorMessage("Error saving profile. Please try again.");
-      } else {
-        setIsSaved(true);
-        setErrorMessage("");
-        setTimeout(() => setIsSaved(false), 3000);
-        console.log("Profile saved successfully.");
-      }
-    });
+    saveProfile(profile, resume);
+    setIsSaved(true);
+    setTimeout(() => setIsSaved(false), 3000);
   };
 
   const handleResumeChange = (e) => {
@@ -53,11 +33,11 @@ const ProfileEdit = () => {
   };
 
   return (
-    <div className="form-container">
-      <div className="heading-container">
-        <h2 className="text-h1">Manage Your Profile</h2>
+    <div className="p-6 bg-white rounded-md shadow-md">
+      <div className="mb-6">
+        <h2 className="text-3xl font-semibold mb-2">Manage Your Profile</h2>
       </div>
-      <form onSubmit={handleSubmit} className="form-block">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {step === 1 && (
           <FieldGroup heading="Basic Information">
             <FormField
@@ -124,16 +104,20 @@ const ProfileEdit = () => {
 
         {step === 3 && (
           <FieldGroup heading="Resume" isFile={true}>
-            <div className="form-field">
-              <label className="form-label">Upload Resume (PDF)</label>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700">
+                Upload Resume (PDF)
+              </label>
               <input
                 type="file"
                 accept=".pdf"
                 onChange={handleResumeChange}
-                className="form-input"
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
-            {resume && <span className="resume-view-text">resume.pdf</span>}
+            {resume && (
+              <span className="text-sm text-gray-600">resume.pdf</span>
+            )}
           </FieldGroup>
         )}
 
@@ -142,7 +126,7 @@ const ProfileEdit = () => {
             <button
               type="button"
               onClick={() => setStep((prev) => prev - 1)}
-              className="back-button"
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded"
             >
               Back
             </button>
@@ -155,21 +139,24 @@ const ProfileEdit = () => {
                 e.preventDefault();
                 setStep((prev) => prev + 1);
               }}
-              className="next-button"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
             >
               Next
             </button>
           ) : (
-            <button type="submit" className="save-button">
+            <button
+              type="submit"
+              className="bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
+            >
               Save Profile
             </button>
           )}
         </div>
 
         {isSaved && (
-          <p className="success-message">Profile saved successfully!</p>
+          <p className="text-green-600 mt-2">Profile saved successfully!</p>
         )}
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        {errorMessage && <p className="text-red-600 mt-2">{errorMessage}</p>}
       </form>
     </div>
   );

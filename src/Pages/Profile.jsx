@@ -1,46 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { initialData } from "../utils/profileFields";
+import React, { useContext, useState } from "react";
 import { FaFilePdf } from "react-icons/fa";
+import { ProfileContext } from "../contexts/ProfileContext";
 
 const Profile = () => {
-  const [profile, setProfile] = useState(initialData);
-  const [resume, setResume] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
+  const { profile, resume, deleteProfile, errorMessage } =
+    useContext(ProfileContext);
   const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    chrome.storage.local.get(["profile", "resume"], (result) => {
-      if (result.profile) {
-        setProfile(result.profile);
-      }
-      if (result.resume) {
-        setResume(result.resume);
-      }
-    });
-  }, []);
 
   if (!profile) {
     return (
-      <div className="main-container">
-        <h1 className="text-h1">View Profile</h1>
-        <p className="text-sub">No profile data found.</p>
+      <div className="flex flex-col items-center justify-center p-4 bg-white">
+        <h1 className="text-2xl font-semibold mb-2">View Profile</h1>
+        <p className="text-gray-500">No profile data found.</p>
       </div>
     );
   }
-
-  const handleDeleteProfile = () => {
-    chrome.storage.local.remove(["profile", "resume"], () => {
-      if (chrome.runtime.lastError) {
-        console.error("Error deleting profile:", chrome.runtime.lastError);
-        setErrorMessage("Error deleting profile. Please try again.");
-      } else {
-        console.log("Profile deleted successfully.");
-        setProfile(initialData);
-        setResume(null);
-        setErrorMessage("");
-      }
-    });
-  };
 
   const handleDownloadResume = () => {
     if (resume) {
@@ -62,18 +36,23 @@ const Profile = () => {
   };
 
   return (
-    <div className="main-container">
-      <div className="delete-container">
-        <button onClick={handleDeleteProfile} className="delete-button">
+    <div className="flex flex-col items-center justify-center p-4 bg-white">
+      <div className="w-full flex justify-end">
+        <button
+          onClick={deleteProfile}
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+        >
           Delete
         </button>
       </div>
-      <h1 className="text-h1">View Profile</h1>
-      <div className="profile-details">
-        <div className="profile-section">
-          <h2 className="profile-section-title">Basic Information</h2>
-          <div className="separator"></div>
-          <div className="profile-info-grid">
+
+      <h1 className="text-2xl font-semibold mb-4">View Profile</h1>
+      <div className="w-full max-w-2xl">
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold">Basic Information</h2>
+          <div className="w-full h-[1px] bg-red-600 mb-2"></div>
+
+          <div className="grid grid-cols-2 gap-4">
             <p>
               <strong>First Name:</strong> {profile.firstName}
             </p>
@@ -88,10 +67,10 @@ const Profile = () => {
             </p>
           </div>
         </div>
-        <div className="profile-section">
-          <h2 className="profile-section-title">Address</h2>
-          <div className="separator"></div>
-          <div className="profile-info-grid">
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold">Address</h2>
+          <div className="w-full h-[1px] bg-red-600 mb-2"></div>
+          <div className="grid grid-cols-2 gap-4">
             <p>
               <strong>Street:</strong> {profile.street}
             </p>
@@ -110,42 +89,49 @@ const Profile = () => {
           </div>
         </div>
         {resume && (
-          <div className="profile-section">
-            <h2 className="profile-section-title">Resume</h2>
-            <div className="separator"></div>
-            <div className="resume-container">
-              <div className="resume-actions-container">
-                <button
-                  className="resume-view-button"
-                  onClick={handleOpenModal}
-                >
-                  <FaFilePdf className="resume-file-icon" />
-                  <span className="resume-view-text">resume.pdf</span>
-                </button>
-                <button
-                  onClick={handleDownloadResume}
-                  className="resume-download-button"
-                >
-                  <span className="resume-download-text">Download</span>
-                </button>
-              </div>
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold">Resume</h2>
+            <div className="w-full h-[1px] bg-red-600 mb-2"></div>
+            <div className="border border-gray-300 rounded-md p-4 flex items-center">
+              <button
+                className="flex items-center text-blue-600 hover:text-blue-800 underline p-2 pr-4"
+                onClick={handleOpenModal}
+              >
+                <FaFilePdf className="mr-2 text-2xl text-blue-800" />
+                <span className="whitespace-nowrap">resume.pdf</span>
+              </button>
+              <div className="border-l border-gray-300 h-6"></div>
+
+              <button
+                onClick={handleDownloadResume}
+                className="font-bold py-2 px-4 ml-4 whitespace-nowrap"
+              >
+                Download
+              </button>
             </div>
           </div>
         )}
       </div>
 
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {errorMessage && (
+        <p className="text-red-500 text-center mt-4">{errorMessage}</p>
+      )}
 
       {showModal && (
-        <div className="resume-modal">
-          <div className="resume-modal-content">
-            <button className="modal-close-button" onClick={handleCloseModal}>
-              Close
-            </button>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-4/5 max-w-3xl">
+            <div className="flex justify-end">
+              <button
+                className="text-gray-500 hover:text-gray-700"
+                onClick={handleCloseModal}
+              >
+                Close
+              </button>
+            </div>
             <embed
               src={resume}
               type="application/pdf"
-              className="modal-resume-preview"
+              className="w-full h-[600px]"
             />
           </div>
         </div>
