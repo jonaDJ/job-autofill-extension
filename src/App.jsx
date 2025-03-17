@@ -18,43 +18,34 @@ function App() {
     setPanelOpen(false);
   };
 
-  const showPage = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  const tabs = [
+    { id: 1, label: "Autofill", icon: <FaMagic />, component: <Home /> },
+    { id: 2, label: "Edit", icon: <FaUserPlus />, component: <ProfileEdit /> },
+    { id: 3, label: "Data", icon: <FaRegUserCircle />, component: <Profile /> },
+  ];
 
   return (
     <div>
       {panelOpen ? (
         <div className="chrome-extension-panel">
-          <div className="chrome-extension-navigation">
-            <button
-              className="chrome-extension-nav-button"
-              onClick={() => showPage(1)}
-            >
-              <FaMagic />
-            </button>
-            <button
-              className="chrome-extension-nav-button"
-              onClick={() => showPage(2)}
-            >
-              <FaUserPlus />
-            </button>
-            <button
-              className="chrome-extension-nav-button"
-              onClick={() => showPage(3)}
-            >
-              <FaRegUserCircle />
-            </button>
-            <button
-              className="chrome-extension-nav-button"
-              onClick={closePanel}
-            >
+          <ul className="chrome-extension-navigation">
+            {tabs.map((tab) => (
+              <li
+                key={tab.id}
+                className={`chrome-extension-nav-button ${
+                  currentPage === tab.id ? "active" : ""
+                }`}
+                onClick={() => setCurrentPage(tab.id)}
+              >
+                {tab.icon}
+              </li>
+            ))}
+            <li className="chrome-extension-nav-button" onClick={closePanel}>
               <FaTimes />
-            </button>
-          </div>
-          {currentPage === 1 && <Home />}
-          {currentPage === 2 && <ProfileEdit />}
-          {currentPage === 3 && <Profile />}
+            </li>
+          </ul>
+
+          {tabs.find((tab) => tab.id === currentPage)?.component}
         </div>
       ) : (
         <button className="chrome-extension-open-button" onClick={openPanel}>

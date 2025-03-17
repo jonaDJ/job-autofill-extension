@@ -1,28 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { FieldGroup, FormField } from "../components/Fields";
-
-const initialData = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phoneNumber: "",
-  street: "",
-  city: "",
-  zipCode: "",
-  state: "",
-  country: "",
-};
+import { initialData } from "../utils/profileFields";
 
 const ProfileEdit = () => {
   const [profile, setProfile] = useState(initialData);
+  const [resume, setResume] = useState(null);
   const [step, setStep] = useState(1);
   const [isSaved, setIsSaved] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    chrome.storage.local.get(["profile"], (result) => {
+    chrome.storage.local.get(["profile", "resume"], (result) => {
       if (result.profile) {
         setProfile(result.profile);
+      }
+      if (result.resume) {
+        setResume(result.resume);
       }
     });
   }, []);
@@ -34,7 +27,7 @@ const ProfileEdit = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    chrome.storage.local.set({ profile }, () => {
+    chrome.storage.local.set({ profile, resume }, () => {
       if (chrome.runtime.lastError) {
         console.error("Error saving profile:", chrome.runtime.lastError);
         setIsSaved(false);
@@ -48,27 +41,19 @@ const ProfileEdit = () => {
     });
   };
 
-  const handleDeleteProfile = () => {
-    chrome.storage.local.remove("profile", () => {
-      if (chrome.runtime.lastError) {
-        console.error("Error deleting profile:", chrome.runtime.lastError);
-        setErrorMessage("Error deleting profile. Please try again.");
-      } else {
-        console.log("Profile deleted successfully.");
-        setProfile(initialData);
-        setErrorMessage("");
-      }
-    });
+  const handleResumeChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setResume(event.target.result); // Store resume as base64
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
     <div className="form-container">
-      <div>
-        <button onClick={handleDeleteProfile} className="delete-button">
-          Delete
-        </button>
-      </div>
-
       <div className="heading-container">
         <h2 className="text-h1">Manage Your Profile</h2>
       </div>
@@ -137,6 +122,21 @@ const ProfileEdit = () => {
           </FieldGroup>
         )}
 
+        {step === 3 && (
+          <FieldGroup heading="Resume" isFile={true}>
+            <div className="form-field">
+              <label className="form-label">Upload Resume (PDF)</label>
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={handleResumeChange}
+                className="form-input"
+              />
+            </div>
+            {resume && <span className="resume-view-text">resume.pdf</span>}
+          </FieldGroup>
+        )}
+
         <div className="button-group">
           {step > 1 && (
             <button
@@ -148,7 +148,7 @@ const ProfileEdit = () => {
             </button>
           )}
 
-          {step < 2 ? (
+          {step < 3 ? (
             <button
               type="button"
               onClick={(e) => {

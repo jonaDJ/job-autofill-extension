@@ -1,11 +1,13 @@
 import React from "react";
 
-const FieldGroup = ({ heading, children }) => {
+const FieldGroup = ({ heading, children, isFile = false }) => {
   return (
     <div className="field-group">
-      <h3 className="field-group-heading">{heading}</h3>
+      <h3 className="profile-section-title">{heading}</h3>
       <div className="separator"></div>
-      <div className="field-group-content">{children}</div>
+      <div className={`field-group-content ${isFile ? "file-content" : ""}`}>
+        {children}
+      </div>
     </div>
   );
 };
