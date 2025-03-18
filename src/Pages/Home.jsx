@@ -1,19 +1,32 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { autofillData } from "../utils/autofillUtils";
-import { ProfileContext } from "../contexts/ProfileContext";
-import { FaMagic } from "react-icons/fa";
+import { FaRocket } from "react-icons/fa";
 
 const Home = () => {
-  const { profile, errorMessage, setErrorMessage } = useContext(ProfileContext);
+  const [profile, setProfile] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleAutoClick = () => {
-    console.log("auto clicked");
-    autofillData(profile, setErrorMessage);
+  useEffect(() => {
+    chrome.storage.local.get(["profile"], (result) => {
+      if (chrome.runtime.lastError) {
+        console.error("Error retrieving profile:", chrome.runtime.lastError);
+        setErrorMessage("Failed to load profile.");
+      } else {
+        setProfile(result.profile);
+      }
+    });
+  }, []);
+
+  const handleAutoClick = async () => {
+    setIsLoading(true);
+    await autofillData(profile, setErrorMessage);
+    setIsLoading(false);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 bg-white">
-      <h1 className="text-lg">
+    <div className="flex flex-col items-center justify-center p-4 bg-white border-t">
+      <h1 className="text-lg font-semibold">
         {profile ? `Welcome, ${profile.firstName}!` : "Welcome to Job AutoFill"}
       </h1>
 
@@ -25,16 +38,21 @@ const Home = () => {
 
       <button
         onClick={handleAutoClick}
-        disabled={!profile}
-        className={`w-full mt-4 py-2 px-4 rounded-md border-none cursor-pointer flex items-center justify-center gap-2
-          ${
-            !profile
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50" // Enabled styles
-          }`}
+        disabled={!profile || isLoading}
+        className={`w-full mt-4 py-2 px-4 rounded-md border-none flex items-center justify-center gap-2 transition-all duration-200
+                    ${
+                      !profile || isLoading
+                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        : "bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transform hover:scale-105"
+                    }`}
       >
-        Autofill
-        <FaMagic />
+        {isLoading ? (
+          "Loading..."
+        ) : (
+          <>
+            Autofill <FaRocket />
+          </>
+        )}
       </button>
       {errorMessage && (
         <p className="text-green-500 text-center">{errorMessage}</p>

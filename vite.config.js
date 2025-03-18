@@ -7,12 +7,12 @@ export default defineConfig({
     rollupOptions: {
       input: {
         content: "src/content.jsx",
-        styles: "src/index.css", // Add this line
+        styles: "src/index.css",
       },
       output: {
         entryFileNames: "[name].js",
         chunkFileNames: "[name].js",
-        assetFileNames: "styles.css", // change this line.
+        assetFileNames: "styles.css",
       },
     },
     outDir: "dist",
