@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { autofillData } from "../utils/autofillUtils";
+import { autofillData, autofillResume } from "../utils/autofillUtils";
 import { FaRocket } from "react-icons/fa";
 
 const Home = () => {
   const [profile, setProfile] = useState(null);
+  const [resume, setResume] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    chrome.storage.local.get(["profile"], (result) => {
+    chrome.storage.local.get(["profile", "resume"], (result) => {
       if (chrome.runtime.lastError) {
         console.error("Error retrieving profile:", chrome.runtime.lastError);
         setErrorMessage("Failed to load profile.");
       } else {
         setProfile(result.profile);
+        setResume(result.resume);
       }
     });
   }, []);
@@ -21,6 +23,9 @@ const Home = () => {
   const handleAutoClick = async () => {
     setIsLoading(true);
     await autofillData(profile, setErrorMessage);
+    if (resume) {
+      await autofillResume(resume, setErrorMessage);
+    }
     setIsLoading(false);
   };
 

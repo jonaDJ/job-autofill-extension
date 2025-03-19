@@ -29,7 +29,7 @@ const FormField = ({
 }) => {
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-medium text-gray-800">
+      <label htmlFor={id} className="block text-md font-medium text-gray-800">
         {label}
       </label>
       {children ? (
@@ -41,7 +41,7 @@ const FormField = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="mt-2 text-gray-700 bg-gray-50 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-2 py-3"
+          className="mt-0.5 text-gray-700 bg-gray-50 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm px-2 py-3"
         />
       )}
     </div>

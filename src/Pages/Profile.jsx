@@ -103,7 +103,7 @@ const Profile = () => {
               <div className="w-full h-[2px] bg-gradient-to-r from-red-500 to-red-700 mb-3"></div>
               <div className="grid grid-cols-1 sm:grid-cols-2">
                 {section.fields.map((field) => (
-                  <p key={field.key} className="text-gray-700 text-sm mb-2">
+                  <p key={field.key} className="text-gray-700 text-md mb-2">
                     <strong className="font-medium text-gray-900">
                       {field.label}:{" "}
                     </strong>

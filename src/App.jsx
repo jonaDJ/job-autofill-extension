@@ -33,7 +33,7 @@ function App() {
               className="absolute -top-2 -left-2 w-7 h-7 border-2 bg-white border-gray-900 text-black rounded-full flex items-center justify-center cursor-pointer hover:text-red-800  transition-colors"
               onClick={closePanel}
             >
-              <FaTimes className="text-md" />
+              <FaTimes className="text-md w-full" />
             </button>
           )}
           <div className="flex items-center justify-between p-2 border-b pt-4">
