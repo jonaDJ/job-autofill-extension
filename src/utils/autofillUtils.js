@@ -4,8 +4,15 @@ const autofillData = async (profile, setErrorMessage) => {
   try {
     if (!profile) return;
 
-    for (const { selectors, valueKey } of fieldMappings) {
-      const value = profile[valueKey];
+    for (const { selectors, valueKey, valueResolver } of fieldMappings) {
+      let value;
+
+      if (valueResolver) {
+        value = valueResolver(profile);
+      } else {
+        value = profile[valueKey];
+      }
+
       if (!value) continue;
 
       for (const selector of selectors) {

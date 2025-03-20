@@ -2,8 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-#root {
+#job-extension-root {
   width: 100%;
+  overflow: hidden;
 }
 
 /* Custom Scrollbar */

@@ -22,11 +22,12 @@
         "https://www.linkedin.com/jobs/*",
         "https://www.indeed.com/apply/*",
         "https://www.monster.com/jobs/apply/*",
-        "https://boards.greenhouse.io/*/jobs/*",
+        "https://boards.greenhouse.io/*",
         "https://apply.workable.com/*/apply/*",
         "https://jobs.lever.co/*/apply*",
         "https://fedex.paradox.ai/*",
-        "https://jobs.ashbyhq.com/*"
+        "https://jobs.ashbyhq.com/*",
+        "https://www.metacareers.com/resume/*"
       ],
       "js": ["content.js"],
       "css": ["styles.css"]

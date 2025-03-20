@@ -1,4 +1,5 @@
 const fieldMappings = [
+  // Name
   {
     selectors: [
       'input[name="job_application[first_name]"]',
@@ -26,12 +27,27 @@ const fieldMappings = [
   },
   {
     selectors: [
+      'input[name="name"]',
+      'input[id="name"]',
+      'input[placeholder="Name"]',
+      'input[name="full_name"]',
+      'input[name="candidateName"]',
+      'input[id="full_name"]',
+    ],
+    valueResolver: (profile) =>
+      `${profile.firstName || ""} ${profile.lastName || ""}`.trim(),
+  },
+
+  // Contact
+  {
+    selectors: [
       'input[name="job_application[phone]"]',
       "input#phone",
       'input[name="phoneNumber"]',
       'input[id="phoneNumber"]',
       'input[name="phone"]',
       'input[id="phone"]',
+      'input[name="candidatePhone"]',
       'input[placeholder="1-415-555-1234..."]',
     ],
     valueKey: "phoneNumber",
@@ -43,10 +59,13 @@ const fieldMappings = [
       'input[name="email"]',
       'input[id="email"]',
       'input[name="applicantEmail"]',
+      'input[name="candidateEmail"]',
       'input[name="_systemfield_email"]',
     ],
     valueKey: "email",
   },
+
+  // Address
   {
     selectors: [
       'input[name="job_application[street]"]',
@@ -64,7 +83,7 @@ const fieldMappings = [
       'input[name="city"]',
       'input[id="city"]',
       'input[name="applicantCity"]',
-      'input[name="job_application[location]"]', //could be a simple location
+      'input[name="job_application[location]"]', // Could be a simple location
     ],
     valueKey: "city",
   },
@@ -97,6 +116,54 @@ const fieldMappings = [
       'input[name="applicantCountry"]',
     ],
     valueKey: "country",
+  },
+
+  // Social Links
+  {
+    selectors: [
+      'input[name="job_application[github]"]',
+      "input#github",
+      'input[name="github"]',
+      'input[id="github"]',
+      'input[name="applicantGithub"]',
+      'input[placeholder="GitHub URL"]',
+    ],
+    valueKey: "github",
+  },
+  {
+    selectors: [
+      'input[name="job_application[linkedin]"]',
+      "input#linkedin",
+      'input[name="linkedin"]',
+      'input[id="linkedin"]',
+      'input[name="applicantLinkedIn"]',
+      'input[placeholder="LinkedIn URL"]',
+    ],
+    valueKey: "linkedin",
+  },
+  {
+    selectors: [
+      'input[name="job_application[portfolio]"]',
+      "input#portfolio",
+      'input[name="portfolio"]',
+      'input[id="portfolio"]',
+      'input[name="applicantPortfolio"]',
+      'input[placeholder="Portfolio URL"]',
+    ],
+    valueKey: "portfolio",
+  },
+  {
+    selectors: [
+      'input[placeholder="URL (LinkedIn, Github, Portfolio)"]',
+      'input[name="urls[0]"]',
+      'input[name="url"]',
+      'input[id="url"]',
+      'input[placeholder="URL"]',
+    ],
+    valueResolver: (profile) => {
+      // Prioritize LinkedIn, GitHub, or Portfolio
+      return profile.linkedin || profile.github || profile.portfolio || "";
+    },
   },
 ];
 

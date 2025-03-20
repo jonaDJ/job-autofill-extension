@@ -2,11 +2,11 @@ import React from "react";
 
 const FieldGroup = ({ heading, children, rows }) => {
   return (
-    <div className="mb-0">
+    <div className="mb-6">
       <h3 className="text-lg font-semibold text-gray-800">{heading}</h3>
-      <div className="border-b border-1 border-red-700 my-0"></div>
+      <div className="border-b border-1 border-red-700 my-2"></div>
       <div
-        className={`pt-2 ${
+        className={`${
           rows
             ? "grid grid-cols-1 gap-4"
             : "grid grid-cols-1 sm:grid-cols-2 gap-4"
@@ -25,11 +25,12 @@ const FormField = ({
   value,
   onChange,
   placeholder,
+  error,
   children,
 }) => {
   return (
     <div>
-      <label htmlFor={id} className="block text-md font-medium text-black">
+      <label htmlFor={id} className="block text-md font-medium text-gray-700">
         {label}
       </label>
       {children ? (
@@ -41,9 +42,12 @@ const FormField = ({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="text-gray-800 bg-gray-50 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm p-2"
+          className={`mt-1 block w-full border ${
+            error ? "border-red-500" : "border-gray-300"
+          } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm p-2`}
         />
       )}
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 };

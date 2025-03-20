@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { autofillData, autofillResume } from "../utils/autofillUtils";
-import { FaRocket } from "react-icons/fa";
+import { FaRocket, FaSpinner } from "react-icons/fa";
 import useProfile from "../hooks/useProfile";
 
 const Home = () => {
@@ -11,25 +11,40 @@ const Home = () => {
 
   const handleAutoClick = async () => {
     setIsLoading(true);
-    await autofillData(profile, setErrorMessage);
-    if (resume) {
-      await autofillResume(resume, setErrorMessage);
+    setErrorMessage("");
+    try {
+      await autofillData(profile, setErrorMessage);
+      if (resume) {
+        await autofillResume(resume, setErrorMessage);
+      }
+    } catch (error) {
+      console.log(error);
+      setErrorMessage("An error occurred during autofill. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
-  if (loadingData) return <>Loading</>;
+  if (loadingData) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <FaSpinner className="animate-spin text-3xl text-red-600" />
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 bg-white border-t">
-      <h1 className="text-lg font-semibold text-black">
-        {profile ? `Welcome, ${profile.firstName}!` : "Welcome to Job AutoFill"}
+    <div className="flex flex-col items-center justify-center p-6 bg-white border-t">
+      <h1 className="text-xl font-semibold text-gray-800 mb-2">
+        {profile
+          ? `Welcome, ${profile.firstName || "Yo!"}!`
+          : "Welcome to Job AutoFill"}
       </h1>
 
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-gray-500 mb-4 text-center">
         {profile
           ? "Streamline your job application process with your saved profile."
-          : "No profile found."}
+          : "No profile found. Please create a profile to use autofill."}
       </p>
 
       <button
@@ -41,17 +56,21 @@ const Home = () => {
                         ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                         : "bg-red-600 text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transform hover:scale-105"
                     }`}
+        title={!profile ? "Please create a profile to use autofill." : ""}
       >
         {isLoading ? (
-          "Loading..."
+          <FaSpinner className="animate-spin" />
         ) : (
           <>
             Autofill <FaRocket />
           </>
         )}
       </button>
+
       {errorMessage && (
-        <p className="text-green-500 text-center">{errorMessage}</p>
+        <p className="text-red-500 text-center mt-4 font-medium">
+          {errorMessage}
+        </p>
       )}
     </div>
   );
