@@ -23,7 +23,10 @@
         "https://www.indeed.com/apply/*",
         "https://www.monster.com/jobs/apply/*",
         "https://boards.greenhouse.io/*/jobs/*",
-        "https://apply.workable.com/*/apply/*"
+        "https://apply.workable.com/*/apply/*",
+        "https://jobs.lever.co/*/apply*",
+        "https://fedex.paradox.ai/*",
+        "https://jobs.ashbyhq.com/*"
       ],
       "js": ["content.js"],
       "css": ["styles.css"]

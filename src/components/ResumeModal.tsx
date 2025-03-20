@@ -1,4 +1,5 @@
 import React from "react";
+import { FaTimes } from "react-icons/fa";
 
 interface ResumeModalProps {
   resume: string;
@@ -7,22 +8,26 @@ interface ResumeModalProps {
 
 const ResumeModal: React.FC<ResumeModalProps> = ({ resume, onClose }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
-      <div className="bg-white p-5 rounded-lg shadow-xl w-full max-w-3xl relative">
+    <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+      <div className="bg-white p-6 rounded-lg shadow-xl relative w-full  max-h-[95%] flex flex-col">
         <button
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 transition-all duration-200 text-xl"
+          className="absolute top-3 right-3 text-red-700 cursor-pointer hover:text-red-900 transition"
           onClick={onClose}
         >
-          ✕
+          <FaTimes className="text-2xl" />
         </button>
-        <h2 className="text-lg font-semibold text-gray-800 mb-3 text-center">
+
+        <h2 className="text-lg font-semibold mb-4 text-center">
           Resume Preview
         </h2>
-        <iframe
-          src={resume}
-          className="w-full h-[500px] border border-gray-200 rounded-md"
-          title="Resume Preview"
-        />
+
+        <div className="overflow-y-auto custom-scrollbar flex-grow border border-gray-300 rounded-md">
+          <iframe
+            src={resume}
+            className="w-full h-[500px]"
+            title="Resume Preview"
+          />
+        </div>
       </div>
     </div>
   );

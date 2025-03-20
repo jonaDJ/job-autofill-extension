@@ -1,59 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { FaFilePdf, FaTrash } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaRegFilePdf, FaTrash, FaDownload } from "react-icons/fa";
 import ResumeModal from "../components/ResumeModal";
-
-const profileConfig = [
-  {
-    title: "Basic Information",
-    fields: [
-      { label: "First Name", key: "firstName" },
-      { label: "Last Name", key: "lastName" },
-      { label: "Email", key: "email" },
-      { label: "Phone Number", key: "phoneNumber" },
-    ],
-  },
-  {
-    title: "Address",
-    fields: [
-      { label: "Street", key: "street" },
-      { label: "City", key: "city" },
-      { label: "Zip Code", key: "zipCode" },
-      { label: "State", key: "state" },
-      { label: "Country", key: "country" },
-    ],
-  },
-];
+import { profileConfig } from "../utils/profileFields";
+import useProfile from "../hooks/useProfile";
 
 const Profile = () => {
-  const [profile, setProfile] = useState(null);
-  const [resume, setResume] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    chrome.storage.local.get(["profile", "resume"], (result) => {
-      if (chrome.runtime.lastError) {
-        console.error("Error retrieving profile:", chrome.runtime.lastError);
-        setErrorMessage("Failed to load profile.");
-      } else {
-        setProfile(result.profile);
-        setResume(result.resume);
-      }
-    });
-  }, []);
-
-  const deleteProfile = () => {
-    chrome.storage.local.remove(["profile", "resume"], () => {
-      if (chrome.runtime.lastError) {
-        console.error("Error deleting profile:", chrome.runtime.lastError);
-        setErrorMessage("Error deleting profile. Please try again.");
-      } else {
-        setProfile(null);
-        setResume(null);
-        setErrorMessage("");
-      }
-    });
-  };
+  const { profile, resume, loadingData, error, deleteProfile } = useProfile();
 
   const handleDownloadResume = () => {
     if (resume) {
@@ -66,6 +19,8 @@ const Profile = () => {
     }
   };
 
+  if (loadingData) return <>Loading...</>;
+
   if (!profile) {
     return (
       <div className="flex flex-col items-center justify-center h-full p-4 bg-gray-100 rounded-lg shadow-md">
@@ -76,21 +31,19 @@ const Profile = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center border-t  bg-[#F8F9FA]">
+    <div className="flex flex-col items-center justify-center border-t">
       <div className="w-full bg-white shadow-lg px-3 py-1">
+        <h1 className="text-2xl text-center font-semibold text-gray-900">
+          Profile
+        </h1>
         <div className="flex justify-end">
           <button
             onClick={deleteProfile}
-            className=" flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-2 py-2 rounded-md shadow-sm transition-all"
+            className="flex mb-2 items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-2 py-2 rounded-md shadow-sm transition-all"
           >
             <FaTrash /> Delete
           </button>
         </div>
-
-        <h1 className="text-2xl text-center font-semibold text-gray-900">
-          Profile
-        </h1>
-
         <div className="space-y-3 mb-3">
           {profileConfig.map((section, index) => (
             <div
@@ -101,46 +54,56 @@ const Profile = () => {
                 {section.title}
               </h2>
               <div className="w-full h-[2px] bg-gradient-to-r from-red-500 to-red-700 mb-3"></div>
-              <div className="grid grid-cols-1 sm:grid-cols-2">
-                {section.fields.map((field) => (
-                  <p key={field.key} className="text-gray-700 text-md mb-2">
-                    <strong className="font-medium text-gray-900">
-                      {field.label}:{" "}
-                    </strong>
-                    {profile[field.key]}
-                  </p>
-                ))}
-              </div>
+              {!section.isFile ? (
+                <div className="flex flex-col items-start gap-1">
+                  {section.fields.map((field) => (
+                    <div
+                      key={field.key}
+                      className="text-md flex items-center gap-3"
+                    >
+                      <strong className="font-semibold text-gray-700">
+                        {field.label}:
+                      </strong>
+                      <span className="text-gray-700">
+                        {profile[field.key] || (
+                          <span className="text-gray-500">Not provided</span>
+                        )}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <>
+                  {resume && resume !== "null" ? (
+                    <div className="flex items-center justify-between bg-white shadow-sm border border-gray-300 pl-3 w-full">
+                      <div className="flex items-center py-2">
+                        <button
+                          className="flex items-center text-blue-600 hover:text-blue-800 transition-all focus:outline-none"
+                          onClick={() => setShowModal(true)}
+                        >
+                          <FaRegFilePdf className="mr-2 text-3xl text-blue-800" />
+                          View Resume
+                        </button>
+                      </div>
+                      <button
+                        onClick={handleDownloadResume}
+                        className="flex items-center py-2 px-3 bg-white text-black hover:bg-gray-500 transition-all focus:outline-none"
+                      >
+                        <FaDownload className="mr-2" />
+                        Download
+                      </button>
+                    </div>
+                  ) : (
+                    <p className="text-gray-500">No resume uploaded.</p>
+                  )}
+                </>
+              )}
             </div>
           ))}
-
-          {resume && (
-            <div className="p-4 rounded-lg bg-gray-50 border border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-800">Resume</h2>
-              <div className="w-full h-[2px] bg-gradient-to-r from-red-500 to-red-700 mb-3"></div>
-              <div className="flex items-center justify-between bg-white shadow-sm border border-gray-300 p-3 rounded-lg">
-                <button
-                  className="flex items-center text-blue-600 hover:text-blue-800 transition-all"
-                  onClick={() => setShowModal(true)}
-                >
-                  <FaFilePdf className="mr-2 text-2xl text-blue-800" />
-                  <span className="font-medium">View Resume</span>
-                </button>
-                <button
-                  onClick={handleDownloadResume}
-                  className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-lg shadow-sm transition-all"
-                >
-                  Download
-                </button>
-              </div>
-            </div>
-          )}
         </div>
 
-        {errorMessage && (
-          <p className="text-red-500 text-center mt-4 font-medium">
-            {errorMessage}
-          </p>
+        {error && (
+          <p className="text-red-500 text-center mt-4 font-medium">{error}</p>
         )}
       </div>
 

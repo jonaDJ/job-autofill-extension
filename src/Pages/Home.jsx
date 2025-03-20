@@ -1,24 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { autofillData, autofillResume } from "../utils/autofillUtils";
 import { FaRocket } from "react-icons/fa";
+import useProfile from "../hooks/useProfile";
 
 const Home = () => {
-  const [profile, setProfile] = useState(null);
-  const [resume, setResume] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    chrome.storage.local.get(["profile", "resume"], (result) => {
-      if (chrome.runtime.lastError) {
-        console.error("Error retrieving profile:", chrome.runtime.lastError);
-        setErrorMessage("Failed to load profile.");
-      } else {
-        setProfile(result.profile);
-        setResume(result.resume);
-      }
-    });
-  }, []);
+  const { profile, resume, loadingData } = useProfile();
 
   const handleAutoClick = async () => {
     setIsLoading(true);
@@ -29,9 +18,11 @@ const Home = () => {
     setIsLoading(false);
   };
 
+  if (loadingData) return <>Loading</>;
+
   return (
     <div className="flex flex-col items-center justify-center p-4 bg-white border-t">
-      <h1 className="text-lg font-semibold">
+      <h1 className="text-lg font-semibold text-black">
         {profile ? `Welcome, ${profile.firstName}!` : "Welcome to Job AutoFill"}
       </h1>
 
