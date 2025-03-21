@@ -39,7 +39,10 @@ function App() {
         )}
 
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          <h1 className="text-xl font-bold bg-gradient-to-r from-red-900 via-red-700 to-red-600 text-transparent bg-clip-text drop-shadow-[0_0_10px_rgba(255,0,0,0.7)] tracking-wider">
+          <h1
+            onClick={() => setCurrentPage(1)}
+            className="text-xl cursor-pointer font-bold bg-gradient-to-r from-red-900 via-red-700 to-red-600 text-transparent bg-clip-text drop-shadow-[0_0_10px_rgba(255,0,0,0.7)] tracking-wider"
+          >
             Autofill
           </h1>
 
@@ -66,7 +69,7 @@ function App() {
       </div>
 
       <button
-        className={`fixed top-5 right-[-5px] w-[4rem] h-[5rem] bg-red-600 text-white border-none rounded-tl-lg rounded-bl-lg cursor-pointer shadow-md flex justify-center items-center z-[10001] transition-transform duration-300 hover:bg-red-700 ${
+        className={`fixed top-5 right-0 w-[4rem] h-[5rem] bg-red-600 text-white border-none rounded-tl-lg rounded-bl-lg cursor-pointer shadow-md flex justify-center items-center z-[10001] transition-transform duration-300 hover:bg-red-700 ${
           panelOpen ? "translate-x-full" : "translate-x-0"
         }`}
         onClick={openPanel}

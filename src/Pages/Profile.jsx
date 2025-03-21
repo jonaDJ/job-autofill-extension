@@ -47,7 +47,9 @@ const Profile = () => {
             </h1>
             <button
               onClick={() => setShowConfirmation(true)}
-              className="flex items-center gap-2 p-2 text-red-600 hover:bg-red-50 rounded-md shadow-sm transition-colors"
+              className="flex items-center gap-2 p-2 text-red-600 hover:bg-red-50 rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-red-500"
+              aria-label="Delete Profile"
+              title="Delete Profile"
             >
               <FaTrash /> Delete Profile
             </button>
@@ -64,11 +66,11 @@ const Profile = () => {
                     {section.isFile ? (
                       <>
                         {resume && resume !== "null" ? (
-                          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                          <div className="flex flex-row items-center justify-between gap-4 bg-gray-50 p-4 rounded-lg">
                             <div className="flex items-center gap-3">
                               <FaRegFilePdf className="text-3xl text-red-600" />
                               <button
-                                className="text-blue-600 hover:text-blue-800 hover:underline transition-all"
+                                className="text-blue-600 hover:text-blue-800 hover:underline transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 onClick={() => setShowModal(true)}
                               >
                                 View Resume
@@ -76,11 +78,14 @@ const Profile = () => {
                             </div>
                             <button
                               onClick={handleDownloadResume}
-                              className="flex items-center gap-2 text-gray-700 hover:text-red-600 hover:shadow-sm transition-all"
+                              className="flex items-center gap-2 text-gray-700 hover:text-red-600 hover:shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-red-500"
                               disabled={isDownloading}
                             >
                               {isDownloading ? (
-                                <FaSpinner className="animate-spin" />
+                                <FaSpinner
+                                  className="animate-spin"
+                                  aria-label="Downloading resume"
+                                />
                               ) : (
                                 <FaDownload />
                               )}
@@ -92,13 +97,13 @@ const Profile = () => {
                         )}
                       </>
                     ) : section.isArray ? (
-                      profile.education.map((edu, eduIndex) => (
+                      profile.experience.map((exp, expIndex) => (
                         <div
-                          key={eduIndex}
-                          className="shadow-md p-3 rounded-md"
+                          key={expIndex}
+                          className="shadow-md p-3 rounded-md hover:shadow-lg transition-shadow"
                         >
                           <h3 className="text-md font-semibold text-black text-end">
-                            Education {eduIndex + 1}
+                            Experience {expIndex + 1}
                           </h3>
 
                           <div className="flex flex-col gap-0 pl-2 text-sm">
@@ -108,7 +113,7 @@ const Profile = () => {
                                   {field.label}:
                                 </strong>
                                 <p className="text-gray-700">
-                                  {edu[field.id] || (
+                                  {exp[field.id] || (
                                     <span className="text-gray-500">
                                       Not provided
                                     </span>
@@ -144,7 +149,13 @@ const Profile = () => {
           </div>
 
           {error && (
-            <p className="text-red-500 text-center mt-4 font-medium">{error}</p>
+            <p
+              className="text-red-500 text-center mt-4 font-medium"
+              aria-live="assertive"
+              role="alert"
+            >
+              {error}
+            </p>
           )}
         </div>
       )}

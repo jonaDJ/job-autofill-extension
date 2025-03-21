@@ -1,31 +1,37 @@
+const experienceData = {
+  company: "",
+  position: "",
+  startDate: "",
+  endDate: "",
+  description: "",
+};
+
 const educationData = {
-  school: "",
-  degree: "",
-  fieldOfStudy: "",
-  graduationYear: "",
+  edu_school: "",
+  edu_degree: "",
+  edu_fieldOfStudy: "",
+  edu_graduationYear: "",
+  edu_gpa: "",
+  edu_honors: "",
+  edu_location: "",
+  edu_relevantCourses: "",
 };
 
 const initialData = {
-  // Basic Information
   firstName: "",
   lastName: "",
   email: "",
   phoneNumber: "",
-
-  // Address Information
   street: "",
   city: "",
   zipCode: "",
   state: "",
   country: "",
-
-  // Social Links
   github: "",
   linkedin: "",
   portfolio: "",
-
-  // Education
-  education: [educationData],
+  experience: [experienceData],
+  ...educationData,
 };
 
 const profileConfig = [
@@ -36,20 +42,35 @@ const profileConfig = [
       {
         title: "Basic Information",
         fields: [
-          { label: "First Name", key: "firstName", id: "firstName" },
-          { label: "Last Name", key: "lastName", id: "lastName" },
-          { label: "Email", key: "email", id: "email" },
-          { label: "Phone Number", key: "phoneNumber", id: "phoneNumber" },
+          {
+            label: "First Name",
+            key: "firstName",
+            id: "firstName",
+            type: "string",
+          },
+          {
+            label: "Last Name",
+            key: "lastName",
+            id: "lastName",
+            type: "string",
+          },
+          { label: "Email", key: "email", id: "email", type: "email" },
+          {
+            label: "Phone Number",
+            key: "phoneNumber",
+            id: "phoneNumber",
+            type: "tel",
+          },
         ],
       },
       {
         title: "Address Information",
         fields: [
-          { label: "Street", key: "street", id: "street" },
-          { label: "City", key: "city", id: "city" },
-          { label: "Zip Code", key: "zipCode", id: "zipCode" },
-          { label: "State", key: "state", id: "state" },
-          { label: "Country", key: "country", id: "country" },
+          { label: "Street", key: "street", id: "street", type: "string" },
+          { label: "City", key: "city", id: "city", type: "string" },
+          { label: "Zip Code", key: "zipCode", id: "zipCode", type: "string" },
+          { label: "State", key: "state", id: "state", type: "string" },
+          { label: "Country", key: "country", id: "country", type: "string" },
         ],
       },
     ],
@@ -61,9 +82,27 @@ const profileConfig = [
       {
         title: "Social Links",
         fields: [
-          { label: "GitHub", key: "github", id: "github" },
-          { label: "LinkedIn", key: "linkedin", id: "linkedin" },
-          { label: "Portfolio/Website", key: "portfolio", id: "portfolio" },
+          {
+            label: "GitHub",
+            key: "github",
+            id: "github",
+            type: "url",
+            icon: "FaGithub",
+          },
+          {
+            label: "LinkedIn",
+            key: "linkedin",
+            id: "linkedin",
+            type: "url",
+            icon: "FaLinkedin",
+          },
+          {
+            label: "Portfolio/Website",
+            key: "portfolio",
+            id: "portfolio",
+            type: "url",
+            icon: "FaGlobe",
+          },
         ],
       },
       {
@@ -78,16 +117,82 @@ const profileConfig = [
     rows: true,
     fields: [
       {
-        title: "Education",
+        title: "Experience",
         isArray: true,
         fields: [
-          { label: "School", key: "school", id: "school" },
-          { label: "Degree", key: "degree", id: "degree" },
-          { label: "Field of Study", key: "fieldOfStudy", id: "fieldOfStudy" },
+          { label: "Company", key: "company", id: "company", type: "string" },
+          {
+            label: "Position",
+            key: "position",
+            id: "position",
+            type: "string",
+          },
+          {
+            label: "Start Date",
+            key: "startDate",
+            id: "startDate",
+            type: "date",
+          },
+          { label: "End Date", key: "endDate", id: "endDate", type: "date" },
+          {
+            label: "Description",
+            key: "description",
+            id: "description",
+            type: "text",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    step: 4,
+    rows: true,
+    fields: [
+      {
+        title: "Education",
+        fields: [
+          {
+            label: "School",
+            key: "edu_school",
+            id: "edu_school",
+            type: "string",
+          },
+          {
+            label: "Degree",
+            key: "edu_degree",
+            id: "edu_degree",
+            type: "string",
+          },
+          {
+            label: "Field of Study",
+            key: "edu_fieldOfStudy",
+            id: "edu_fieldOfStudy",
+            type: "string",
+          },
           {
             label: "Graduation Year",
-            key: "graduationYear",
-            id: "graduationYear",
+            key: "edu_graduationYear",
+            id: "edu_graduationYear",
+            type: "number",
+          },
+          { label: "GPA", key: "edu_gpa", id: "edu_gpa", type: "number" },
+          {
+            label: "Honors/Awards",
+            key: "edu_honors",
+            id: "edu_honors",
+            type: "string",
+          },
+          {
+            label: "Location",
+            key: "edu_location",
+            id: "edu_location",
+            type: "string",
+          },
+          {
+            label: "Relevant Courses",
+            key: "edu_relevantCourses",
+            id: "edu_relevantCourses",
+            type: "text",
           },
         ],
       },
@@ -95,4 +200,4 @@ const profileConfig = [
   },
 ];
 
-export { initialData, profileConfig, educationData };
+export { initialData, profileConfig, experienceData, educationData };

@@ -4,7 +4,7 @@ import { FaFilePdf, FaSpinner, FaPlus, FaTrash } from "react-icons/fa";
 import {
   initialData,
   profileConfig,
-  educationData,
+  experienceData,
 } from "../utils/profileFields";
 import useProfile from "../hooks/useProfile";
 import ResumeModal from "../components/ResumeModal";
@@ -32,8 +32,8 @@ const ProfileEdit = () => {
     if (index !== undefined) {
       setLocalProfile((prev) => ({
         ...prev,
-        education: prev.education.map((edu, i) =>
-          i === index ? { ...edu, [id]: value } : edu
+        experience: prev.experience.map((exp, i) =>
+          i === index ? { ...exp, [id]: value } : exp
         ),
       }));
     } else {
@@ -42,17 +42,17 @@ const ProfileEdit = () => {
     setErrors((prev) => ({ ...prev, [id]: "" }));
   };
 
-  const addEducation = () => {
+  const addExperience = () => {
     setLocalProfile((prev) => ({
       ...prev,
-      education: [...prev.education, { ...educationData }],
+      experience: [...prev.experience, { ...experienceData }],
     }));
   };
 
-  const deleteEducation = (index) => {
+  const deleteExperience = (index) => {
     setLocalProfile((prev) => ({
       ...prev,
-      education: prev.education.filter((_, i) => i !== index),
+      experience: prev.experience.filter((_, i) => i !== index),
     }));
   };
 
@@ -80,12 +80,14 @@ const ProfileEdit = () => {
 
   const handleResumeChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
+    if (file && file.type === "application/pdf") {
       const reader = new FileReader();
       reader.onload = (event) => {
         setLocalResume(event.target.result);
       };
       reader.readAsDataURL(file);
+    } else {
+      alert("Please upload a valid PDF file.");
     }
   };
 
@@ -124,39 +126,92 @@ const ProfileEdit = () => {
             rows={section.rows || section.isFile || section.isArray}
           >
             {section.isFile ? (
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Upload Resume (PDF)
                 </label>
-                <input
-                  type="file"
-                  accept=".pdf"
-                  onChange={handleResumeChange}
-                  className="mt-2 block w-full text-gray-700 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-                />
+                <div className="flex items-center justify-center w-full">
+                  <label
+                    tabIndex={0}
+                    className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        document.getElementById("resume-upload").click();
+                      }
+                    }}
+                  >
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <svg
+                        className="w-8 h-8 text-gray-400 mb-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                        ></path>
+                      </svg>
+                      <p className="text-sm text-gray-500">
+                        <span className="font-semibold">Click to upload</span>{" "}
+                        or drag and drop
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        PDF only (max. 5MB)
+                      </p>
+                    </div>
+                    <input
+                      id="resume-upload"
+                      type="file"
+                      accept=".pdf"
+                      onChange={handleResumeChange}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
                 {localResume && (
-                  <div className="flex items-center justify-end mt-2">
+                  <div className="mt-3 flex items-center justify-between bg-green-50 p-3 rounded-md">
+                    <div className="flex items-center">
+                      <svg
+                        className="w-5 h-5 text-green-500 mr-2"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"
+                        ></path>
+                      </svg>
+                      <p className="text-sm text-green-700">Resume uploaded!</p>
+                    </div>
                     <button
                       onClick={() => setShowModal(true)}
-                      className="flex items-center text-blue-600 hover:text-blue-800"
+                      className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
                     >
-                      <FaFilePdf className="mr-2" />
                       View Resume
                     </button>
                   </div>
                 )}
               </div>
             ) : section.isArray ? (
-              localProfile.education.map((edu, eduIndex) => (
-                <div key={eduIndex} className="mb-6">
+              localProfile.experience.map((exp, expIndex) => (
+                <div key={expIndex} className="mb-6">
                   <div className="flex justify-between items-center">
                     <h4 className="text-md font-semibold text-gray-800">
-                      Education {eduIndex + 1}
+                      Experience {expIndex + 1}
                     </h4>
                     <button
                       type="button"
-                      onClick={() => deleteEducation(eduIndex)}
-                      className="px-2 text-red-600 hover:text-red-900"
+                      onClick={() => deleteExperience(expIndex)}
+                      className="px-2 text-red-600 hover:text-red-900 focus:outline-none focus:ring-2 focus:ring-red-500"
+                      aria-label={`Delete Experience ${expIndex + 1}`}
                     >
                       <FaTrash />
                     </button>
@@ -168,9 +223,10 @@ const ProfileEdit = () => {
                         key={field.id}
                         label={field.label}
                         id={field.id}
-                        value={edu[field.id]}
-                        onChange={(e) => handleChange(e, eduIndex)}
+                        value={exp[field.id]}
+                        onChange={(e) => handleChange(e, expIndex)}
                         error={errors[field.id]}
+                        type={field.type}
                       />
                     ))}
                   </div>
@@ -185,17 +241,18 @@ const ProfileEdit = () => {
                   value={localProfile[field.id]}
                   onChange={handleChange}
                   error={errors[field.id]}
+                  type={field.type}
                 />
               ))
             )}
             {section.isArray && (
               <button
                 type="button"
-                onClick={addEducation}
-                className="flex items-center justify-center w-full p-2 mt-4 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                onClick={addExperience}
+                className="flex items-center justify-center w-full p-2 mt-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
               >
                 <FaPlus className="mr-2" />
-                Add Education
+                Add Experience
               </button>
             )}
           </FieldGroup>
@@ -214,22 +271,19 @@ const ProfileEdit = () => {
             <ActionButton
               name="Next"
               onClick={() => setStep((prev) => prev + 1)}
-              className="bg-blue-600 text-white hover:bg-blue-700"
+              className="bg-blue-800 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           ) : (
             <ActionButton
-              name="Save Profile"
+              name={`${isSaved ? "Profil Saved!" : "Save"}  `}
               onClick={handleSubmit}
-              className="bg-red-600 text-white hover:bg-red-700"
+              className={`text-white ${
+                isSaved ? "bg-green-600  " : "bg-red-600  hover:bg-red-700"
+              } `}
             />
           )}
         </div>
 
-        {isSaved && (
-          <p className="text-green-600 mt-2 text-center">
-            Profile saved successfully!
-          </p>
-        )}
         {error && <p className="text-red-600 mt-2 text-center">{error}</p>}
       </form>
 
