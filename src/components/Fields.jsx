@@ -1,13 +1,17 @@
 import React from "react";
 
-const FieldGroup = ({ heading, children, rows }) => {
+const FieldGroup = ({ heading, children, isSingleRow }) => {
   return (
     <div className="mb-6">
-      <h3 className="text-lg font-semibold text-gray-800">{heading}</h3>
-      <div className="border-b border-1 border-red-700 my-2"></div>
+      {!isSingleRow && (
+        <>
+          <h3 className="text-lg font-semibold text-gray-800">{heading}</h3>
+          <div className="border-b border-1 border-red-700 my-2"></div>
+        </>
+      )}
       <div
         className={`${
-          rows
+          isSingleRow
             ? "grid grid-cols-1 gap-4"
             : "grid grid-cols-1 sm:grid-cols-2 gap-4"
         }`}

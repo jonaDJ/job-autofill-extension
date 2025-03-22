@@ -37,7 +37,6 @@ const initialData = {
 const profileConfig = [
   {
     step: 1,
-    rows: false,
     fields: [
       {
         title: "Basic Information",
@@ -77,7 +76,6 @@ const profileConfig = [
   },
   {
     step: 2,
-    rows: true,
     fields: [
       {
         title: "Social Links",
@@ -114,7 +112,6 @@ const profileConfig = [
   },
   {
     step: 3,
-    rows: true,
     fields: [
       {
         title: "Experience",
@@ -146,7 +143,6 @@ const profileConfig = [
   },
   {
     step: 4,
-    rows: true,
     fields: [
       {
         title: "Education",

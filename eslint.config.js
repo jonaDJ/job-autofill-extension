@@ -8,13 +8,12 @@ export default [
   {
     files: ["**/*.{js,jsx}"],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: "latest",
       globals: {
         ...globals.browser,
         chrome: "readonly",
       },
       parserOptions: {
-        ecmaVersion: "latest",
         ecmaFeatures: { jsx: true },
         sourceType: "module",
       },

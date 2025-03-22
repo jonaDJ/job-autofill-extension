@@ -1,4 +1,4 @@
-import { fieldMappings } from "./fieldsMapping";
+import { fieldMappings, fieldEducationMappings } from "./fieldsMapping";
 
 const autofillData = async (profile, setErrorMessage) => {
   try {
@@ -36,12 +36,62 @@ const autofillData = async (profile, setErrorMessage) => {
         }
       }
     }
-    setErrorMessage("Autofill successful!");
-    setTimeout(() => setErrorMessage(""), 3000);
+    await autofillEducation(profile, setErrorMessage);
+    await autofillExperience();
   } catch (error) {
-    console.error("Error during autofill:", error);
+    console.log("calling failed", error);
     setErrorMessage("Autofill failed. Please try again.");
   }
+};
+
+const autofillEducation = async (data, setErrorMessage) => {
+  try {
+    if (!data) return;
+
+    const addEducationButton = document.querySelector(
+      'button[data-ui="add-section"][aria-label="Add Education"]'
+    );
+    if (addEducationButton) {
+      addEducationButton.click();
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
+
+    for (const { selectors, valueKey } of fieldEducationMappings) {
+      const value = data[valueKey];
+      if (!value) continue;
+      let input;
+      for (const selector of selectors) {
+        input = document.querySelector(selector);
+        if (input) break;
+      }
+
+      if (!input) continue;
+
+      input.style.border = "2px solid red";
+      input.scrollIntoView({ behavior: "smooth", block: "center" });
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      input.value = value;
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+      input.style.border = "";
+    }
+
+    const updateButton = document.querySelector(
+      'button[data-ui="save-section"]'
+    );
+    if (updateButton) {
+      updateButton.click();
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
+  } catch (error) {
+    console.log("Error during education autofill:", error);
+    setErrorMessage("Education autofill failed. Please try again.");
+  }
+};
+
+const autofillExperience = async () => {
+  return; //we will right logic later
 };
 
 async function observeAutocomplete() {
@@ -116,7 +166,6 @@ const autofillResume = async (resumeData, setErrorMessage) => {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       if (method === "buttonClick") {
-        console.log("buttonClick");
         const fileInput = document.querySelector('input[type="file"]');
         if (!fileInput) {
           return false;
@@ -130,8 +179,6 @@ const autofillResume = async (resumeData, setErrorMessage) => {
       }
 
       element.style.border = "";
-      setErrorMessage("Resume uploaded successfully");
-      setTimeout(() => setErrorMessage(""), 3000);
       return true;
     };
 
@@ -145,7 +192,7 @@ const autofillResume = async (resumeData, setErrorMessage) => {
 
     setErrorMessage("Resume upload failed. No suitable upload method found.");
   } catch (error) {
-    console.error("Error uploading resume:", error);
+    console.log("Error uploading resume:", error);
     setErrorMessage("Resume upload failed. Please try again.");
   }
 };

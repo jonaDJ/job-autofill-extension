@@ -167,4 +167,71 @@ const fieldMappings = [
   },
 ];
 
-export { fieldMappings };
+const fieldEducationMappings = [
+  {
+    selectors: [
+      'input[name="school"]',
+      'input[id="school"]',
+      'input[placeholder="School Name"]',
+    ],
+    valueKey: "edu_school",
+  },
+  {
+    selectors: [
+      'input[name="degree"]',
+      'input[id="degree"]',
+      'input[placeholder="Degree"]',
+    ],
+    valueKey: "edu_degree",
+  },
+  {
+    selectors: [
+      'input[name="field_of_study"]',
+      'input[id="field_of_study"]',
+      'input[placeholder="Field of Study"]',
+    ],
+    valueKey: "edu_fieldOfStudy",
+  },
+  {
+    selectors: [
+      'input[name="graduation_year"]',
+      'input[id="graduation_year"]',
+      'input[placeholder="Graduation Year"]',
+    ],
+    valueKey: "edu_graduationYear",
+  },
+  {
+    selectors: [
+      'input[name="gpa"]',
+      'input[id="gpa"]',
+      'input[placeholder="GPA"]',
+    ],
+    valueKey: "edu_gpa",
+  },
+  {
+    selectors: [
+      'input[name="honors"]',
+      'input[id="honors"]',
+      'input[placeholder="Honors"]',
+    ],
+    valueKey: "edu_honors",
+  },
+  {
+    selectors: [
+      'input[name="location"]',
+      'input[id="location"]',
+      'input[placeholder="Location"]',
+    ],
+    valueKey: "edu_location",
+  },
+  {
+    selectors: [
+      'textarea[name="relevant_courses"]',
+      'textarea[id="relevant_courses"]',
+      'textarea[placeholder="Relevant Courses"]',
+    ],
+    valueKey: "edu_relevantCourses",
+  },
+];
+
+export { fieldMappings, fieldEducationMappings };

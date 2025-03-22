@@ -1,7 +1,7 @@
 import "./index.css";
 import React, { useState } from "react";
 import Home from "./Pages/Home";
-import ProfileEdit from "./Pages/ProfileEdit";
+import ProfileEdit from "./Pages/ProfileEdit/ProfileEdit";
 import Profile from "./Pages/Profile";
 import { FaPencilAlt, FaUser, FaTimes, FaRocket } from "react-icons/fa";
 import logo from "./assets/logo.png";
@@ -23,7 +23,7 @@ function App() {
   return (
     <div className="relative font-mono">
       <div
-        className={`fixed top-5 bg-white border-2 border-gray-200 rounded-tl-lg rounded-bl-lg shadow-lg z-[10001] w-[40%] max-w-[450px] transition-transform duration-300 ${
+        className={`fixed top-5 bg-white border-2 border-gray-200 rounded-tl-lg rounded-bl-lg shadow-lg z-[10001] w-[80%] max-w-[450px] transition-transform duration-300 ${
           panelOpen ? "right-5 translate-x-0" : "right-0 translate-x-full"
         }`}
         onMouseEnter={() => setIsCloseButtonVisible(true)}
