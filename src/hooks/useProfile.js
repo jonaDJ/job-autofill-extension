@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { initialData } from "../utils/profileFields";
+import { initialData } from "../utils/constants/profileFields";
 
 const useProfile = () => {
   const [profile, setProfile] = useState(initialData);

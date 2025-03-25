@@ -1,8 +1,8 @@
 import React from "react";
-import { experienceData } from "../../utils/profileFields";
+import { experienceData } from "../utils/constants/profileFields";
 import { FaPlus, FaTrash } from "react-icons/fa";
-import { FormField } from "../../components/Fields";
-const ExperienceSection = ({
+import { FormField } from "./Fields";
+const ExperienceFields = ({
   experience,
   setProfile,
   fields,
@@ -67,4 +67,4 @@ const ExperienceSection = ({
   );
 };
 
-export default ExperienceSection;
+export default ExperienceFields;

@@ -1,7 +1,7 @@
 import React from "react";
-import ActionButton from "../../components/ActionButton";
+import ActionButton from "./ActionButton";
 
-const ActionButtons = ({
+const FormActions = ({
   step,
   totalSteps,
   onBack,
@@ -38,4 +38,4 @@ const ActionButtons = ({
   );
 };
 
-export default ActionButtons;
+export default FormActions;

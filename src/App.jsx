@@ -1,7 +1,7 @@
 import "./index.css";
 import React, { useState } from "react";
 import Home from "./Pages/Home";
-import ProfileEdit from "./Pages/ProfileEdit/ProfileEdit";
+import ProfileEdit from "./Pages/ProfileEdit";
 import Profile from "./Pages/Profile";
 import { FaPencilAlt, FaUser, FaTimes, FaRocket } from "react-icons/fa";
 import logo from "./assets/logo.png";

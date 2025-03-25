@@ -1,8 +1,8 @@
 const experienceData = {
   company: "",
   position: "",
-  startDate: "",
-  endDate: "",
+  startDate: null,
+  endDate: null,
   description: "",
 };
 
@@ -10,7 +10,7 @@ const educationData = {
   edu_school: "",
   edu_degree: "",
   edu_fieldOfStudy: "",
-  edu_graduationYear: "",
+  edu_graduation: null,
   edu_gpa: "",
   edu_honors: "",
   edu_location: "",
@@ -167,9 +167,9 @@ const profileConfig = [
           },
           {
             label: "Graduation Year",
-            key: "edu_graduationYear",
-            id: "edu_graduationYear",
-            type: "number",
+            key: "edu_graduation",
+            id: "edu_graduation",
+            type: "date",
           },
           { label: "GPA", key: "edu_gpa", id: "edu_gpa", type: "number" },
           {

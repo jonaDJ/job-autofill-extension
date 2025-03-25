@@ -10,6 +10,7 @@ const fieldMappings = [
       'input[name="applicantFirstName"]',
       'input[placeholder="First name"]',
       'input[name="_systemfield_name"]',
+      'spl-input[id="first-name-input"]',
     ],
     valueKey: "firstName",
   },
@@ -22,6 +23,7 @@ const fieldMappings = [
       'input[id="lastname"]',
       'input[name="applicantLastName"]',
       'input[placeholder="Last name"]',
+      'spl-input[id="last-name-input"]',
     ],
     valueKey: "lastName",
   },
@@ -61,6 +63,8 @@ const fieldMappings = [
       'input[name="applicantEmail"]',
       'input[name="candidateEmail"]',
       'input[name="_systemfield_email"]',
+      'spl-input[id="email-input"]',
+      'spl-input[id="confirm-email-input"]',
     ],
     valueKey: "email",
   },
@@ -83,7 +87,6 @@ const fieldMappings = [
       'input[name="city"]',
       'input[id="city"]',
       'input[name="applicantCity"]',
-      'input[name="job_application[location]"]', // Could be a simple location
     ],
     valueKey: "city",
   },
@@ -117,6 +120,14 @@ const fieldMappings = [
     ],
     valueKey: "country",
   },
+  {
+    selectors: [
+      'input[name="job_application[location]"]', // Could be a simple location
+      'input[id="candidate-location"]',
+    ],
+    valueResolver: (profile) =>
+      `${profile.city}, ${profile.state}, ${profile.country}`,
+  },
 
   // Social Links
   {
@@ -138,6 +149,8 @@ const fieldMappings = [
       'input[id="linkedin"]',
       'input[name="applicantLinkedIn"]',
       'input[placeholder="LinkedIn URL"]',
+      'input[aria-label="LinkedIn Profile"]',
+      'spl-input[id="linkedin-input"]',
     ],
     valueKey: "linkedin",
   },
@@ -159,10 +172,12 @@ const fieldMappings = [
       'input[name="url"]',
       'input[id="url"]',
       'input[placeholder="URL"]',
+      'input[aria-label="Website"]',
+      'spl-input[id="website-input"]',
     ],
     valueResolver: (profile) => {
       // Prioritize LinkedIn, GitHub, or Portfolio
-      return profile.linkedin || profile.github || profile.portfolio || "";
+      return profile.portfolio || profile.linkedin || profile.github || "";
     },
   },
 ];

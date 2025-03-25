@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { autofillData, autofillResume } from "../utils/autofillUtils";
+import autofill from "../utils/autofill/autofill";
 import { FaRocket, FaSpinner } from "react-icons/fa";
 import useProfile from "../hooks/useProfile";
 
@@ -13,10 +13,7 @@ const Home = () => {
     setIsLoading(true);
     setErrorMessage("");
     try {
-      await autofillData(profile, setErrorMessage);
-      if (resume) {
-        await autofillResume(resume, setErrorMessage);
-      }
+      await autofill(profile || "", resume || "", setErrorMessage);
     } catch (error) {
       console.log(error);
       setErrorMessage("An error occurred during autofill. Please try again.");

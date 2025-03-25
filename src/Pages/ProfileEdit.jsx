@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { FieldGroup, FormField } from "../../components/Fields";
+import { FieldGroup, FormField } from "../components/Fields";
 import { FaSpinner } from "react-icons/fa";
-import { initialData, profileConfig } from "../../utils/profileFields";
-import useProfile from "../../hooks/useProfile";
-import ResumeModal from "../../components/ResumeModal";
-import StepIndicator from "./StepIndicator";
-import ResumeField from "./ResumeField";
-import ActionButtons from "./ActionButtons";
-import ExperienceSection from "./ExperienceSection";
+import { initialData, profileConfig } from "../utils/constants/profileFields";
+import useProfile from "../hooks/useProfile";
+import ResumeModal from "../components/ResumeModal";
+import StepIndicator from "../components/StepIndicator";
+import ResumeField from "../components/ResumeField";
+import FormActions from "../components/FormActions";
+import ExperienceFields from "../components/ExperienceFields";
 
 const ProfileEdit = () => {
   const [localProfile, setLocalProfile] = useState(initialData);
@@ -98,7 +98,7 @@ const ProfileEdit = () => {
                 onViewResume={() => setShowModal(true)}
               />
             ) : section.isArray ? (
-              <ExperienceSection
+              <ExperienceFields
                 experience={localProfile.experience}
                 setProfile={setLocalProfile}
                 fields={section.fields}
@@ -121,7 +121,7 @@ const ProfileEdit = () => {
           </FieldGroup>
         ))}
 
-        <ActionButtons
+        <FormActions
           step={step}
           totalSteps={totalSteps}
           onBack={() => setStep((prev) => prev - 1)}

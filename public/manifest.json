@@ -19,15 +19,14 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.linkedin.com/jobs/*",
-        "https://www.indeed.com/apply/*",
-        "https://www.monster.com/jobs/apply/*",
         "https://boards.greenhouse.io/*",
+        "https://job-boards.greenhouse.io/*",
         "https://apply.workable.com/*/apply/*",
         "https://jobs.lever.co/*/apply*",
         "https://fedex.paradox.ai/*",
         "https://jobs.ashbyhq.com/*",
-        "https://www.metacareers.com/resume/*"
+        "https://www.metacareers.com/resume/*",
+        "https://jobs.smartrecruiters.com/*"
       ],
       "js": ["content.js"],
       "css": ["styles.css"]

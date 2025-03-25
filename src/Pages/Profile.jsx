@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaRegFilePdf, FaTrash, FaDownload, FaSpinner } from "react-icons/fa";
 import ResumeModal from "../components/ResumeModal";
-import { profileConfig } from "../utils/profileFields";
+import { profileConfig } from "../utils/constants/profileFields";
 import useProfile from "../hooks/useProfile";
 import ConfirmationModal from "../components/ConfirmationModal";
 
