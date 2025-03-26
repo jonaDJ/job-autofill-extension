@@ -8,10 +8,10 @@ import { autofillResume } from "./autofillResume";
 const autofill = async (profile, resume, setErrorMessage) => {
   try {
     if (!profile && !resume) return;
-
-    await autofillBasic(profile, setErrorMessage);
     await autofillResume(resume, setErrorMessage);
-    await autofillEducation(profile, setErrorMessage);
+    await autofillBasic(profile, setErrorMessage);
+
+    await autofillEducation(profile.education, setErrorMessage);
     await autofillExperience();
   } catch (error) {
     console.log("calling failed", error);

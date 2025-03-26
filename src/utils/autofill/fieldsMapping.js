@@ -43,19 +43,6 @@ const fieldMappings = [
   // Contact
   {
     selectors: [
-      'input[name="job_application[phone]"]',
-      "input#phone",
-      'input[name="phoneNumber"]',
-      'input[id="phoneNumber"]',
-      'input[name="phone"]',
-      'input[id="phone"]',
-      'input[name="candidatePhone"]',
-      'input[placeholder="1-415-555-1234..."]',
-    ],
-    valueKey: "phoneNumber",
-  },
-  {
-    selectors: [
       'input[name="job_application[email]"]',
       "input#email",
       'input[name="email"]',
@@ -67,6 +54,26 @@ const fieldMappings = [
       'spl-input[id="confirm-email-input"]',
     ],
     valueKey: "email",
+  },
+  {
+    selectors: [
+      'input[name="job_application[phone]"]',
+      "input#phone",
+      'input[name="phoneNumber"]',
+      'input[id="phoneNumber"]',
+      'input[name="phone"]',
+      'input[id="phone"]',
+      'input[name="candidatePhone"]',
+      'input[placeholder="1-415-555-1234..."]',
+      {
+        shadowPath: [
+          'spl-phone-field[label="Phone number"]',
+          "spl-input",
+          "input",
+        ],
+      },
+    ],
+    valueKey: "phoneNumber",
   },
 
   // Address
@@ -122,8 +129,15 @@ const fieldMappings = [
   },
   {
     selectors: [
-      'input[name="job_application[location]"]', // Could be a simple location
       'input[id="candidate-location"]',
+      'input[name="job_application[location]"]',
+      {
+        shadowPath: [
+          'spl-autocomplete[label="Place of residence"]',
+          "spl-input",
+          "input",
+        ],
+      },
     ],
     valueResolver: (profile) =>
       `${profile.city}, ${profile.state}, ${profile.country}`,
@@ -189,7 +203,7 @@ const fieldEducationMappings = [
       'input[id="school"]',
       'input[placeholder="School Name"]',
     ],
-    valueKey: "edu_school",
+    valueKey: "school",
   },
   {
     selectors: [
@@ -197,7 +211,7 @@ const fieldEducationMappings = [
       'input[id="degree"]',
       'input[placeholder="Degree"]',
     ],
-    valueKey: "edu_degree",
+    valueKey: "degree",
   },
   {
     selectors: [
@@ -205,7 +219,7 @@ const fieldEducationMappings = [
       'input[id="field_of_study"]',
       'input[placeholder="Field of Study"]',
     ],
-    valueKey: "edu_fieldOfStudy",
+    valueKey: "fieldOfStudy",
   },
   {
     selectors: [
@@ -213,7 +227,7 @@ const fieldEducationMappings = [
       'input[id="graduation_year"]',
       'input[placeholder="Graduation Year"]',
     ],
-    valueKey: "edu_graduationYear",
+    valueKey: "graduation",
   },
   {
     selectors: [
@@ -221,7 +235,7 @@ const fieldEducationMappings = [
       'input[id="gpa"]',
       'input[placeholder="GPA"]',
     ],
-    valueKey: "edu_gpa",
+    valueKey: "gpa",
   },
   {
     selectors: [
@@ -229,7 +243,7 @@ const fieldEducationMappings = [
       'input[id="honors"]',
       'input[placeholder="Honors"]',
     ],
-    valueKey: "edu_honors",
+    valueKey: "honors",
   },
   {
     selectors: [
@@ -237,15 +251,7 @@ const fieldEducationMappings = [
       'input[id="location"]',
       'input[placeholder="Location"]',
     ],
-    valueKey: "edu_location",
-  },
-  {
-    selectors: [
-      'textarea[name="relevant_courses"]',
-      'textarea[id="relevant_courses"]',
-      'textarea[placeholder="Relevant Courses"]',
-    ],
-    valueKey: "edu_relevantCourses",
+    valueKey: "eduLocation",
   },
 ];
 

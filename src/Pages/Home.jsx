@@ -34,7 +34,7 @@ const Home = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 bg-white border-t">
+    <div className="flex flex-col items-center justify-center bg-white">
       <h1 className="text-xl font-semibold text-gray-800 mb-2">
         {profile
           ? `Welcome, ${profile.firstName || "Yo!"}!`

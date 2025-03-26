@@ -7,14 +7,13 @@ const experienceData = {
 };
 
 const educationData = {
-  edu_school: "",
-  edu_degree: "",
-  edu_fieldOfStudy: "",
-  edu_graduation: null,
-  edu_gpa: "",
-  edu_honors: "",
-  edu_location: "",
-  edu_relevantCourses: "",
+  school: "",
+  degree: "",
+  fieldOfStudy: "",
+  graduation: null,
+  gpa: "",
+  honors: "",
+  eduLocation: "",
 };
 
 const initialData = {
@@ -31,7 +30,19 @@ const initialData = {
   linkedin: "",
   portfolio: "",
   experience: [experienceData],
-  ...educationData,
+  education: educationData,
+  demographics: {
+    gender: "",
+    isHispanicLatino: "",
+    veteranStatus: "",
+    disabilityStatus: "",
+  },
+  preferences: {
+    salaryExpectations: "",
+    authorizedToWork: "",
+    willingToRelocate: "",
+    workLocationPreference: "",
+  },
 };
 
 const profileConfig = [
@@ -40,6 +51,7 @@ const profileConfig = [
     fields: [
       {
         title: "Basic Information",
+        singleRow: false,
         fields: [
           {
             label: "First Name",
@@ -64,6 +76,7 @@ const profileConfig = [
       },
       {
         title: "Address Information",
+        singleRow: false,
         fields: [
           { label: "Street", key: "street", id: "street", type: "string" },
           { label: "City", key: "city", id: "city", type: "string" },
@@ -79,6 +92,7 @@ const profileConfig = [
     fields: [
       {
         title: "Social Links",
+        singleRow: true,
         fields: [
           {
             label: "GitHub",
@@ -105,6 +119,7 @@ const profileConfig = [
       },
       {
         title: "Resume",
+        singleRow: true,
         fields: [],
         isFile: true,
       },
@@ -116,6 +131,7 @@ const profileConfig = [
       {
         title: "Experience",
         isArray: true,
+        singleRow: true,
         fields: [
           { label: "Company", key: "company", id: "company", type: "string" },
           {
@@ -135,7 +151,8 @@ const profileConfig = [
             label: "Description",
             key: "description",
             id: "description",
-            type: "text",
+            type: "textarea",
+            rows: 5,
           },
         ],
       },
@@ -146,49 +163,147 @@ const profileConfig = [
     fields: [
       {
         title: "Education",
+        singleRow: false,
         fields: [
           {
             label: "School",
-            key: "edu_school",
-            id: "edu_school",
+            key: "education.school", // Use dot notation
+            id: "education.school",
             type: "string",
           },
           {
             label: "Degree",
-            key: "edu_degree",
-            id: "edu_degree",
+            key: "education.degree",
+            id: "education.degree",
             type: "string",
           },
           {
             label: "Field of Study",
-            key: "edu_fieldOfStudy",
-            id: "edu_fieldOfStudy",
+            key: "education.fieldOfStudy",
+            id: "education.fieldOfStudy",
             type: "string",
           },
           {
-            label: "Graduation Year",
-            key: "edu_graduation",
-            id: "edu_graduation",
+            label: "Graduation",
+            key: "education.graduation",
+            id: "education.graduation",
             type: "date",
           },
-          { label: "GPA", key: "edu_gpa", id: "edu_gpa", type: "number" },
+          {
+            label: "GPA",
+            key: "education.gpa",
+            id: "education.gpa",
+            type: "number",
+          },
           {
             label: "Honors/Awards",
-            key: "edu_honors",
-            id: "edu_honors",
+            key: "education.honors",
+            id: "education.honors",
             type: "string",
           },
           {
             label: "Location",
-            key: "edu_location",
-            id: "edu_location",
+            key: "education.eduLocation",
+            id: "education.eduLocation",
             type: "string",
           },
+        ],
+      },
+    ],
+  },
+  {
+    step: 5,
+    fields: [
+      {
+        title: "Demographic Information",
+        singleRow: true,
+        fields: [
           {
-            label: "Relevant Courses",
-            key: "edu_relevantCourses",
-            id: "edu_relevantCourses",
-            type: "text",
+            label: "Gender",
+            key: "demographics.gender",
+            id: "demographics.gender",
+            type: "select",
+            options: [
+              { value: "", label: "Select..." },
+              { value: "male", label: "Male" },
+              { value: "female", label: "Female" },
+              { value: "non-binary", label: "Non-binary" },
+              { value: "prefer-not-to-say", label: "Prefer not to say" },
+            ],
+          },
+          {
+            label: "Are you Hispanic/Latino?",
+            key: "demographics.isHispanicLatino",
+            id: "demographics.isHispanicLatino",
+            type: "select",
+            options: [
+              { value: "", label: "Select..." },
+              { value: "yes", label: "Yes" },
+              { value: "no", label: "No" },
+              { value: "prefer-not-to-say", label: "Prefer not to say" },
+            ],
+          },
+          {
+            label: "Veteran Status",
+            key: "demographics.veteranStatus",
+            id: "demographics.veteranStatus",
+            type: "select",
+            options: [
+              { value: "", label: "Select..." },
+              { value: "veteran", label: "I am a veteran" },
+              { value: "not-veteran", label: "I am not a veteran" },
+              { value: "prefer-not-to-say", label: "Prefer not to say" },
+            ],
+          },
+          {
+            label: "Disability Status",
+            key: "demographics.disabilityStatus",
+            id: "demographics.disabilityStatus",
+            type: "select",
+            options: [
+              { value: "", label: "Select..." },
+              { value: "yes", label: "Yes, I have a disability" },
+              { value: "no", label: "No, I don't have a disability" },
+              { value: "prefer-not-to-say", label: "Prefer not to say" },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Job Preferences",
+        singleRow: true,
+        fields: [
+          {
+            label: "Salary expectations",
+            key: "preferences.salaryExpectations",
+            id: "preferences.salaryExpectations",
+            type: "string",
+            placeholder: "e.g. $80,000 - $100,000",
+          },
+          {
+            label: "Work authorization",
+            key: "preferences.authorizedToWork",
+            id: "preferences.authorizedToWork",
+            type: "select",
+            options: [
+              { value: "", label: "Select..." },
+              { value: "yes", label: "Yes" },
+              { value: "no", label: "No" },
+            ],
+          },
+          {
+            label: "Work location preference",
+            key: "preferences.workLocationPreference",
+            id: "preferences.workLocationPreference",
+            type: "select",
+            options: [
+              { value: "", label: "Select preference..." },
+              { value: "remote", label: "Remote only" },
+              { value: "hybrid", label: "Hybrid (preferred)" },
+              { value: "onsite", label: "On-site" },
+              { value: "flexible", label: "Flexible (any option)" },
+              { value: "relocatable", label: "Willing to relocate" },
+            ],
           },
         ],
       },

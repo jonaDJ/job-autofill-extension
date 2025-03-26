@@ -35,6 +35,16 @@ const findBestParentToHighlight = (input) => {
   return input.parentElement?.parentElement || input.parentElement || input;
 };
 
+const findElementByShadowPath = (shadowPath) => {
+  let element = document;
+  for (const path of shadowPath) {
+    element = element.querySelector(path);
+    if (!element) return null;
+    if (element.shadowRoot) element = element.shadowRoot;
+  }
+  return element;
+};
+
 export {
   addHighlight,
   removeHighlight,
@@ -42,4 +52,5 @@ export {
   delay,
   findBestParentToHighlight,
   fillAndHighlightField,
+  findElementByShadowPath,
 };

@@ -25,7 +25,7 @@ const ExperienceFields = ({
   return (
     <>
       {experience.map((exp, expIndex) => (
-        <div key={expIndex} className="mb-6">
+        <div key={expIndex} className="my-5 ">
           <div className="flex justify-between items-center">
             <h4 className="text-md font-semibold text-gray-800">
               Experience {expIndex + 1}
@@ -50,6 +50,8 @@ const ExperienceFields = ({
                 onChange={(e) => handleChange(e, expIndex)}
                 error={errors[field.id]}
                 type={field.type}
+                rows={field.rows}
+                options={field.options}
               />
             ))}
           </div>

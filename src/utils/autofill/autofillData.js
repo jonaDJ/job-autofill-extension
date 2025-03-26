@@ -2,41 +2,55 @@ import {
   delay,
   findBestParentToHighlight,
   fillAndHighlightField,
+  findElementByShadowPath,
 } from "./helper";
 import { fieldEducationMappings, fieldMappings } from "./fieldsMapping";
 
 const autofillBasic = async (profile, setErrorMessage) => {
   try {
     if (!profile) return;
+
     for (const { selectors, valueKey, valueResolver } of fieldMappings) {
       const value = valueResolver ? valueResolver(profile) : profile[valueKey];
       if (!value) continue;
 
+      let input;
       for (const selector of selectors) {
-        const input = document.querySelector(selector);
-        if (!input || (input && input.type === "hidden")) continue;
+        try {
+          if (typeof selector === "object" && selector.shadowPath) {
+            input = findElementByShadowPath(selector.shadowPath);
+          } else {
+            input = document.querySelector(selector);
+          }
 
-        if (input.hasAttribute("aria-autocomplete")) {
-          await fillAndHighlightField(
-            input,
-            value,
-            findBestParentToHighlight(input)
-          );
-        } else {
-          await fillAndHighlightField(input, value, input);
+          if (!input || input.type === "hidden") continue;
+
+          if (input.hasAttribute?.("aria-autocomplete")) {
+            await fillAndHighlightField(
+              input,
+              value,
+              findBestParentToHighlight(input)
+            );
+          } else {
+            await fillAndHighlightField(input, value, input);
+          }
+
+          break;
+        } catch (error) {
+          console.warn(`Error with selector ${selector}:`, error);
+          continue;
         }
       }
     }
   } catch (error) {
     console.error("Basic info autofill failed:", error);
     setErrorMessage?.("Basic information autofill failed. Please try again.");
-    throw error;
   }
 };
 
-const autofillEducation = async (data, setErrorMessage) => {
+const autofillEducation = async (educationData, setErrorMessage) => {
   try {
-    if (!data) return;
+    if (!educationData) return;
 
     const addEducationButton = document.querySelector(
       'button[data-ui="add-section"][aria-label="Add Education"]'
@@ -47,8 +61,9 @@ const autofillEducation = async (data, setErrorMessage) => {
     }
 
     for (const { selectors, valueKey } of fieldEducationMappings) {
-      const value = data[valueKey];
+      const value = educationData[valueKey];
       if (!value) continue;
+
       let input;
       for (const selector of selectors) {
         input = document.querySelector(selector);

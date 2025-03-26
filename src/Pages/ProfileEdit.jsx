@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FieldGroup, FormField } from "../components/Fields";
+import { FormField } from "../components/Fields";
 import { FaSpinner } from "react-icons/fa";
 import { initialData, profileConfig } from "../utils/constants/profileFields";
 import useProfile from "../hooks/useProfile";
@@ -9,10 +9,9 @@ import ResumeField from "../components/ResumeField";
 import FormActions from "../components/FormActions";
 import ExperienceFields from "../components/ExperienceFields";
 
-const ProfileEdit = () => {
+const ProfileEdit = ({ step, setStep }) => {
   const [localProfile, setLocalProfile] = useState(initialData);
   const [localResume, setLocalResume] = useState(null);
-  const [step, setStep] = useState(1);
   const [isSaved, setIsSaved] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [errors, setErrors] = useState({});
@@ -28,16 +27,35 @@ const ProfileEdit = () => {
 
   const handleChange = (e, index) => {
     const { id, value } = e.target;
-    if (index !== undefined) {
-      setLocalProfile((prev) => ({
+
+    setLocalProfile((prev) => {
+      if (index !== undefined) {
+        return {
+          ...prev,
+          experience: prev.experience.map((exp, i) =>
+            i === index ? { ...exp, [id]: value } : exp
+          ),
+        };
+      }
+
+      const path = id.split(".");
+      if (path.length > 1) {
+        const [parent, child] = path;
+        return {
+          ...prev,
+          [parent]: {
+            ...prev[parent],
+            [child]: value,
+          },
+        };
+      }
+
+      return {
         ...prev,
-        experience: prev.experience.map((exp, i) =>
-          i === index ? { ...exp, [id]: value } : exp
-        ),
-      }));
-    } else {
-      setLocalProfile((prev) => ({ ...prev, [id]: value }));
-    }
+        [id]: value,
+      };
+    });
+
     setErrors((prev) => ({ ...prev, [id]: "" }));
   };
 
@@ -45,7 +63,13 @@ const ProfileEdit = () => {
     const newErrors = {};
     profileConfig[step - 1].fields.forEach((section) => {
       section.fields.forEach((field) => {
-        if (!localProfile[field.id] && field.required) {
+        const path = field.id.split(".");
+        const value =
+          path.length > 1
+            ? localProfile[path[0]][path[1]]
+            : localProfile[field.id];
+
+        if (!value && field.required) {
           newErrors[field.id] = `${field.label} is required.`;
         }
       });
@@ -72,7 +96,7 @@ const ProfileEdit = () => {
   }
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg">
+    <div className="bg-white ">
       <div className="text-center mb-4">
         <h2 className="text-xl font-semibold text-gray-800">
           Manage Your Profile
@@ -86,39 +110,59 @@ const ProfileEdit = () => {
       </div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         {profileConfig[step - 1].fields.map((section, index) => (
-          <FieldGroup
-            key={index}
-            heading={section.title}
-            isSingleRow={section.isFile || section.isArray}
-          >
-            {section.isFile ? (
-              <ResumeField
-                setResume={setLocalResume}
-                resume={localResume}
-                onViewResume={() => setShowModal(true)}
-              />
-            ) : section.isArray ? (
-              <ExperienceFields
-                experience={localProfile.experience}
-                setProfile={setLocalProfile}
-                fields={section.fields}
-                errors={errors}
-                handleChange={handleChange}
-              />
-            ) : (
-              section.fields.map((field) => (
-                <FormField
-                  key={field.id}
-                  label={field.label}
-                  id={field.id}
-                  value={localProfile[field.id]}
-                  onChange={handleChange}
-                  error={errors[field.id]}
-                  type={field.type}
-                />
-              ))
+          <div key={index} id={`section-${step}-${index}`} className="mb-1">
+            {!section.isArray && (
+              <>
+                <h3 className="text-lg font-semibold text-gray-800">
+                  {section.title}
+                </h3>
+                <div className="border-b border-1 border-red-700 mb-4"></div>
+              </>
             )}
-          </FieldGroup>
+
+            <div
+              className={`grid gap-2 ${
+                section.singleRow ? "grid-cols-1" : "grid-cols-2"
+              }`}
+            >
+              {section.isFile ? (
+                <ResumeField
+                  setResume={setLocalResume}
+                  resume={localResume}
+                  onViewResume={() => setShowModal(true)}
+                />
+              ) : section.isArray ? (
+                <ExperienceFields
+                  experience={localProfile.experience}
+                  setProfile={setLocalProfile}
+                  fields={section.fields}
+                  errors={errors}
+                  handleChange={handleChange}
+                />
+              ) : (
+                section.fields.map((field) => {
+                  const path = field.id.split(".");
+                  const value =
+                    path.length > 1
+                      ? localProfile[path[0]][path[1]]
+                      : localProfile[field.id];
+
+                  return (
+                    <FormField
+                      key={field.id}
+                      label={field.label}
+                      id={field.id}
+                      value={value}
+                      onChange={handleChange}
+                      error={errors[field.id]}
+                      type={field.type}
+                      options={field.options}
+                    />
+                  );
+                })
+              )}
+            </div>
+          </div>
         ))}
 
         <FormActions

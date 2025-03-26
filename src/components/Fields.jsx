@@ -1,27 +1,5 @@
 import React from "react";
 
-const FieldGroup = ({ heading, children, isSingleRow }) => {
-  return (
-    <div className="mb-6">
-      {!isSingleRow && (
-        <>
-          <h3 className="text-lg font-semibold text-gray-800">{heading}</h3>
-          <div className="border-b border-1 border-red-700 my-2"></div>
-        </>
-      )}
-      <div
-        className={`${
-          isSingleRow
-            ? "grid grid-cols-1 gap-4"
-            : "grid grid-cols-1 sm:grid-cols-2 gap-4"
-        }`}
-      >
-        {children}
-      </div>
-    </div>
-  );
-};
-
 const FormField = ({
   label,
   id,
@@ -31,19 +9,47 @@ const FormField = ({
   placeholder,
   error,
   children,
+  rows,
+  options,
 }) => {
   return (
-    <div>
-      <label htmlFor={id} className="block text-md font-medium text-gray-700">
+    <div className="space-y-1">
+      <label htmlFor={id} className="block text-md font-medium text-gray-800">
         {label}
       </label>
       {children ? (
         children
+      ) : type === "textarea" ? (
+        <textarea
+          id={id}
+          value={value || ""}
+          onChange={onChange}
+          placeholder={placeholder}
+          rows={rows}
+          className={`mt-1 custom-scrollbar block w-[204%] border ${
+            error ? "border-red-500" : "border-gray-300"
+          } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm p-2`}
+        />
+      ) : type === "select" ? (
+        <select
+          id={id}
+          value={value || ""}
+          onChange={onChange}
+          className={`mt-1 block w-full border ${
+            error ? "border-red-500" : "border-gray-300"
+          } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm p-2`}
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
       ) : (
         <input
           type={type}
           id={id}
-          value={value}
+          value={value || ""}
           onChange={onChange}
           placeholder={placeholder}
           className={`mt-1 block w-full border ${
@@ -56,4 +62,4 @@ const FormField = ({
   );
 };
 
-export { FieldGroup, FormField };
+export { FormField };
