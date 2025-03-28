@@ -2,10 +2,11 @@
 
 **Automatically fills job applications on 10+ platforms** (Greenhouse, Lever, Workable, etc.). Save hours by autofilling your details with one click!
 
-[![GitHub Stars](https://img.shields.io/github/stars/jonaDJ/job-autofill-extension?style=social)](https://github.com/jonaDJ/job-autofill-extension)  
-_⭐ Star the repo if you find it useful!_
+_⭐ Star the repo if you find it useful!_ 
 
----
+## 🎬 [Watch the Demo](https://res.cloudinary.com/dlcwqj2t2/video/upload/v1743185631/autofill_yl1xpc.mp4)
+
+
 
 ## ✨ Features
 
@@ -14,10 +15,6 @@ _⭐ Star the repo if you find it useful!_
 ✅ **Customizable Templates** – Easily edit fields to fit different applications.  
 ✅ **Lightweight & Fast** – Built files are under ~50KB.
 
----
-
-📽️ **Demo Video:**  
-[![Watch the Demo](https://img.youtube.com/vi/yl1xpc/0.jpg)](https://res.cloudinary.com/dlcwqj2t2/video/upload/v1743185631/autofill_yl1xpc.mp4)
 
 ---
 
