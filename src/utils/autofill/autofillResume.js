@@ -42,7 +42,7 @@ const uploadFileToInput = async (inputElement, file) => {
   inputElement.dispatchEvent(new Event("change", { bubbles: true }));
 };
 
-const autofillResume = async (resumeData, setErrorMessage) => {
+const autofillResume = async (resumeData, setErrorMessage, setCurrentField) => {
   try {
     if (!resumeData) return;
 
@@ -57,7 +57,7 @@ const autofillResume = async (resumeData, setErrorMessage) => {
             : document.querySelector(selector);
 
         if (!element) continue;
-
+        setCurrentField("Resume");
         await addHighlight(element);
 
         await uploadFileToInput(element, file);
@@ -67,18 +67,18 @@ const autofillResume = async (resumeData, setErrorMessage) => {
         removeHighlight(element);
 
         if (uploadSuccessful) {
+          setCurrentField("");
           return;
         }
       } catch (error) {
-        console.error(`Error with selector ${selector}:`, error);
+        console.log(`Error with Resume selector ${selector}:`, error);
+
         continue;
       }
     }
-
-    if (!uploadSuccessful) {
-      setErrorMessage("Resume upload failed. No suitable upload method found.");
-    }
+    setCurrentField("");
   } catch (error) {
+    setCurrentField("Resume");
     console.log("Error uploading resume:", error);
     setErrorMessage("Resume upload failed. Please try again.");
   }

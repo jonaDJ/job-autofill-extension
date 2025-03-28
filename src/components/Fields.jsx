@@ -11,17 +11,19 @@ const FormField = ({
   children,
   rows,
   options,
+  required = false,
 }) => {
   return (
     <div className="space-y-1">
       <label htmlFor={id} className="block text-md font-medium text-gray-800">
-        {label}
+        {label} {required && <span className="text-red-500">*</span>}
       </label>
       {children ? (
         children
       ) : type === "textarea" ? (
         <textarea
           id={id}
+          required={required}
           value={value || ""}
           onChange={onChange}
           placeholder={placeholder}
@@ -33,6 +35,7 @@ const FormField = ({
       ) : type === "select" ? (
         <select
           id={id}
+          required={required}
           value={value || ""}
           onChange={onChange}
           className={`mt-1 block w-full border ${
@@ -48,6 +51,7 @@ const FormField = ({
       ) : (
         <input
           type={type}
+          required={required}
           id={id}
           value={value || ""}
           onChange={onChange}

@@ -129,7 +129,10 @@ const ProfileEdit = ({ step, setStep }) => {
                 <ResumeField
                   setResume={setLocalResume}
                   resume={localResume}
-                  onViewResume={() => setShowModal(true)}
+                  onViewResume={(e) => {
+                    e.preventDefault();
+                    setShowModal(true);
+                  }}
                 />
               ) : section.isArray ? (
                 <ExperienceFields
@@ -157,6 +160,7 @@ const ProfileEdit = ({ step, setStep }) => {
                       error={errors[field.id]}
                       type={field.type}
                       options={field.options}
+                      required={field.required}
                     />
                   );
                 })

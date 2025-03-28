@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useRef, useState } from "react";
+import { FaTimes } from "react-icons/fa";
 
 const ResumeField = ({ resume, setResume, onViewResume }) => {
+  const [inputKey, setInputKey] = useState(Date.now());
+  const fileInputRef = useRef(null);
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type === "application/pdf") {
@@ -12,6 +16,11 @@ const ResumeField = ({ resume, setResume, onViewResume }) => {
     } else {
       alert("Please upload a valid PDF file.");
     }
+  };
+
+  const handleRemoveResume = () => {
+    setResume(null);
+    setInputKey(Date.now()); // I create a new key to force a re-render
   };
 
   return (
@@ -48,41 +57,29 @@ const ResumeField = ({ resume, setResume, onViewResume }) => {
               <span className="font-semibold">Click to upload</span> or drag and
               drop
             </p>
-            <p className="text-xs text-gray-500">PDF only (max. 5MB)</p>
+            <p className="text-xs text-gray-500">PDF only (max 5MB)</p>
           </div>
           <input
+            key={inputKey}
             id="resume-upload"
             type="file"
             accept=".pdf"
             onChange={handleFileChange}
             className="hidden"
+            ref={fileInputRef}
           />
         </label>
       </div>
       {resume && (
         <div className="mt-3 flex items-center justify-between bg-green-50 p-3 rounded-md">
-          <div className="flex items-center">
-            <svg
-              className="w-5 h-5 text-green-500 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M5 13l4 4L19 7"
-              ></path>
-            </svg>
-            <p className="text-sm text-green-700">Resume uploaded!</p>
-          </div>
           <button
             onClick={onViewResume}
             className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
           >
             View Resume
+          </button>
+          <button onClick={handleRemoveResume}>
+            <FaTimes className="text-lg hover:text-red-800" />
           </button>
         </div>
       )}

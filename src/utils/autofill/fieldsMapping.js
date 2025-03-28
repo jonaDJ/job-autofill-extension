@@ -1,4 +1,4 @@
-const fieldMappings = [
+const basicInfoSelectors = [
   // Name
   {
     selectors: [
@@ -11,6 +11,7 @@ const fieldMappings = [
       'input[placeholder="First name"]',
       'input[name="_systemfield_name"]',
       'spl-input[id="first-name-input"]',
+      'input[label="First Name"]',
     ],
     valueKey: "firstName",
   },
@@ -24,6 +25,7 @@ const fieldMappings = [
       'input[name="applicantLastName"]',
       'input[placeholder="Last name"]',
       'spl-input[id="last-name-input"]',
+      'input[label="Last Name"]',
     ],
     valueKey: "lastName",
   },
@@ -64,6 +66,7 @@ const fieldMappings = [
       'input[name="phone"]',
       'input[id="phone"]',
       'input[name="candidatePhone"]',
+      'input[label="Phone Number"]',
       'input[placeholder="1-415-555-1234..."]',
       {
         shadowPath: [
@@ -196,7 +199,7 @@ const fieldMappings = [
   },
 ];
 
-const fieldEducationMappings = [
+const educationSelectors = [
   {
     selectors: [
       'input[name="school"]',
@@ -255,4 +258,55 @@ const fieldEducationMappings = [
   },
 ];
 
-export { fieldMappings, fieldEducationMappings };
+const experienceSelectors = [
+  {
+    selectors: [
+      'input[name="title"]',
+      'input[id="title"]',
+      'input[placeholder="Title"]',
+    ],
+    valueKey: "position",
+  },
+  {
+    selectors: [
+      'input[name="company"]',
+      'input[id="company"]',
+      'input[placeholder="Company"]',
+    ],
+    valueKey: "company",
+  },
+  {
+    selectors: [
+      'input[name="industry"]',
+      'input[id="industry"]',
+      'input[placeholder="Industry"]',
+    ],
+    valueKey: "industry",
+  },
+  {
+    selectors: [
+      'textarea[name="summary"]',
+      'textarea[id="summary"]',
+      'textarea[placeholder="Summary"]',
+    ],
+    valueKey: "description",
+  },
+  {
+    selectors: [
+      'input[name="start_date"]',
+      'input[id="start_date"]',
+      'input[placeholder="MM/YYYY"]',
+    ],
+    valueKey: "startDate",
+  },
+  {
+    selectors: [
+      'input[name="end_date"]',
+      'input[id="end_date"]',
+      'input[placeholder="MM/YYYY"]',
+    ],
+    valueKey: "endDate",
+  },
+];
+
+export { basicInfoSelectors, educationSelectors, experienceSelectors };

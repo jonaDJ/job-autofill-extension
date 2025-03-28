@@ -30,6 +30,7 @@ function App() {
       component: <Profile setCurrentPage={setCurrentPage} setStep={setStep} />,
     },
   ];
+
   return (
     <div
       className="relative"

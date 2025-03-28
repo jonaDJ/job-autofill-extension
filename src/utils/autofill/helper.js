@@ -7,7 +7,7 @@ const addHighlight = async (element) => {
   await delay(500);
 };
 
-const removeHighlight = (element) => {
+const removeHighlight = async (element) => {
   if (!element) return;
   element.style.border = "";
 };
@@ -31,8 +31,22 @@ const fillAndHighlightField = async (input, value, styledInput = input) => {
   removeHighlight(styledInput);
 };
 
-const findBestParentToHighlight = (input) => {
-  return input.parentElement?.parentElement || input.parentElement || input;
+const clickOption = async (option) => {
+  await addHighlight(option);
+  option.click();
+  await removeHighlight(option);
+};
+
+const fillAndHighlightAutocompleteField = async (input) => {
+  await delay(500);
+  if (!input) return;
+  const autocompleteOptions = input.nextElementSibling;
+  if (autocompleteOptions) {
+    const firstOption = autocompleteOptions.querySelector("li[role='option']");
+    if (firstOption) {
+      await clickOption(firstOption);
+    }
+  }
 };
 
 const findElementByShadowPath = (shadowPath) => {
@@ -45,12 +59,22 @@ const findElementByShadowPath = (shadowPath) => {
   return element;
 };
 
+const clickButton = async (selector) => {
+  const button = document.querySelector(selector);
+  if (button) {
+    button.click();
+    await delay(500);
+  }
+};
+
 export {
   addHighlight,
   removeHighlight,
   inputFill,
   delay,
-  findBestParentToHighlight,
   fillAndHighlightField,
+  fillAndHighlightAutocompleteField,
   findElementByShadowPath,
+  clickButton,
+  clickOption,
 };

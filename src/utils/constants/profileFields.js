@@ -34,6 +34,7 @@ const initialData = {
   demographics: {
     gender: "",
     isHispanicLatino: "",
+    race: "",
     veteranStatus: "",
     disabilityStatus: "",
   },
@@ -58,6 +59,7 @@ const profileConfig = [
             key: "firstName",
             id: "firstName",
             type: "string",
+            required: true,
           },
           {
             label: "Last Name",
@@ -240,6 +242,25 @@ const profileConfig = [
               { value: "", label: "Select..." },
               { value: "yes", label: "Yes" },
               { value: "no", label: "No" },
+              { value: "prefer-not-to-say", label: "Prefer not to say" },
+            ],
+          },
+          {
+            label: "Race/Ethnicity",
+            key: "demographics.race",
+            id: "demographics.race",
+            type: "select",
+            options: [
+              { value: "", label: "Select..." },
+              { value: "white", label: "White" },
+              { value: "black", label: "Black or African American" },
+              { value: "asian", label: "Asian" },
+              { value: "native", label: "Native American or Alaska Native" },
+              {
+                value: "pacific",
+                label: "Native Hawaiian or Pacific Islander",
+              },
+              { value: "other", label: "Other" },
               { value: "prefer-not-to-say", label: "Prefer not to say" },
             ],
           },
